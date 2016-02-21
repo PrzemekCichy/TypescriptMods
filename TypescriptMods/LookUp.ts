@@ -1,18 +1,4 @@
-﻿//Return object containing steps to cary out.
-//1-2 parameters passed. 
-/*
-class LookUp {
-
-    constructor(public a : number, public y: number, public z: number) { }
-
-    static times(k: number, v: boolean) {
-        return new LookUp(k * v.x, k * v.y, k * v.z);
-    }
-    
-}
-*/
-
-//game defined variables defined for compiler 
+﻿//game defined variables defined for compiler 
 //Ambient Declarations
 declare var objects_data;
 declare var players;
@@ -27,11 +13,11 @@ interface objectCoordinates {
 
 module AutoSkill {
     export class LookUp {
-        action = this.getAction();//Fishing();
+        action = function () { };//Fishing();
         actionType: string;//Fishing
         params: string[];//Eg. Raw King crab
-        paramsId: number[];
-        objectsFound: any[];
+        paramsId: number[] = [];
+        objectsFound: any[] = [];
 
         //Create an instance of lookUp, which will contain steps requires to complete
         //a given action with certain parameters
@@ -39,23 +25,27 @@ module AutoSkill {
         constructor(action: string, params: any[]) {
             this.actionType = action;
             this.params = params;
+            this.getAction();
+            this.action();
+            this.searchLoop();
         }
 
         //Depending on user action different actions will execute 
         //Select appriopriate function and reference it to default variable called action
-        getAction(): any {
+        getAction(): void {
             switch (this.actionType) {
                 case ("Gathering"):
-                    return this.gathering;
+                    this.action = this.gathering;
             }
         }
 
         //Find object which matches the property from params array
         //and push number to array. 
+        //If number if passed this should should just push a number
         gathering(): void {
             for (var i = 0; i < objects_data.length; i++) {
                 for (var j = 0; j < this.params.length; j++) {
-                    if (objects_data[i].name === this.params[j]) {
+                    if (objects_data[i] !== undefined && objects_data[i].name === this.params[j]) {
                         this.paramsId.push(i);
                     }
                 }
@@ -109,5 +99,5 @@ module AutoSkill {
 
     }
 }
-var greeter = new AutoSkill.LookUp("Gathering", ["Sand"]);
-greeter.getAction();
+var test = new AutoSkill.LookUp("Gathering", ["Sand"]);
+var test1 = new AutoSkill.LookUp("Gathering", ["Furnace"]);

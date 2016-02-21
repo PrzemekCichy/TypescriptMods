@@ -25,6 +25,7 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Action.ts" />
     <TypeScriptCompile Include="LookUp.ts" />
     <TypeScriptCompile Include="MarketAnalysis.ts" />
   </ItemGroup>

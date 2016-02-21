@@ -1,16 +1,3 @@
-//Return object containing steps to cary out.
-//1-2 parameters passed. 
-/*
-class LookUp {
-
-    constructor(public a : number, public y: number, public z: number) { }
-
-    static times(k: number, v: boolean) {
-        return new LookUp(k * v.x, k * v.y, k * v.z);
-    }
-    
-}
-*/
 var AutoSkill;
 (function (AutoSkill) {
     var LookUp = (function () {
@@ -18,24 +5,30 @@ var AutoSkill;
         //a given action with certain parameters
         //Most methods run once, the purpose of this class is to calculate most important steps 
         function LookUp(action, params) {
-            this.action = this.getAction(); //Fishing();
+            this.action = function () { }; //Fishing();
+            this.paramsId = [];
+            this.objectsFound = [];
             this.actionType = action;
             this.params = params;
+            this.getAction();
+            this.action();
+            this.searchLoop();
         }
         //Depending on user action different actions will execute 
         //Select appriopriate function and reference it to default variable called action
         LookUp.prototype.getAction = function () {
             switch (this.actionType) {
                 case ("Gathering"):
-                    return this.gathering;
+                    this.action = this.gathering;
             }
         };
         //Find object which matches the property from params array
         //and push number to array. 
+        //If number if passed this should should just push a number
         LookUp.prototype.gathering = function () {
             for (var i = 0; i < objects_data.length; i++) {
                 for (var j = 0; j < this.params.length; j++) {
-                    if (objects_data[i].name === this.params[j]) {
+                    if (objects_data[i] !== undefined && objects_data[i].name === this.params[j]) {
                         this.paramsId.push(i);
                     }
                 }
@@ -90,6 +83,6 @@ var AutoSkill;
     })();
     AutoSkill.LookUp = LookUp;
 })(AutoSkill || (AutoSkill = {}));
-var greeter = new AutoSkill.LookUp("Gathering", ["Sand"]);
-greeter.getAction();
+var test = new AutoSkill.LookUp("Gathering", ["Sand"]);
+var test1 = new AutoSkill.LookUp("Gathering", ["Furnace"]);
 //# sourceMappingURL=LookUp.js.map
