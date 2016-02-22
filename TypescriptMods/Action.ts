@@ -10,24 +10,38 @@ var debug = true;
 var busy = false;
 var running = true;
 var wait = false;
+
+/*///////////////////////////
+//Need to improve the declaration and design of this module
+//
+//
+//Pick action should be given a parameter, and it should determine what action to perform based on parameter
+//Some examples of this are
+//{ i: 52, j: 68 },//This will take user to location and try to perform action with actionAt method. Only use on on map object (Mobs, ore/fishing spots etc.)
+//[{ i: 55, j: 68 }, { i: 57, j: 70 }],//Object inside array are moveTo coordinates. One or multiple coordinates.
+//{ equipID: 106 }, //Equips item with id of 106 (Raw King crab). Use /id "object name" to find id of an object you wish to equip
+//'wait', // Creates 2s delay. Although it is not required you might use it in action list to see when is the step where you perform lenghty action (eg cook fishes/mine ore etc.)
+//'depositAll' //Deposits all unequipped items. Use ctrl + clcik to protect items you wish not to deposit.
+//
+//
+//
+//There are two options how picking actions could be implemented, one being dirty checking with a loop, other would be event-driven with pub-sub implementation 
+*/////////////////////////////
+
 module PickAction {
     //Buys items from npc. You can pass item id and quantity
     //Default values will be selected shop, and maximum quantity
     function buy(id = shop_content[selected_shop].id,
         quantity = shop_content[selected_shop].count) {
 
-        //Used to randomize click delay
-        var randomClickDelay = function () {
-            //Formula is: Math.floor(Math.random()*(max-min+1)+min);
-            return Math.floor(Math.random() * (190 - 150 + 1) + 150);
-        }
-
         //Buys item from shop selected number of times
         var buyLoop = function (i) {
             setTimeout(function () {
                 Shop.buy(selected_shop);
                 if (--i) buyLoop(i);
-            }, randomClickDelay())
+            },
+                //Formula is: Math.floor(Math.random()*(max-min+1)+min);
+                Math.floor(Math.random() * (190 - 150 + 1) + 150))
         };
 
         //Searches the shop for id
