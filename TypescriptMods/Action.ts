@@ -61,32 +61,21 @@ module PickAction {
 
         if (shop_content[selected_shop].id === id) {
             buyLoop(quantity);
-            this.debug && console.log("Buy no:" + quantity + ". Buy id:" + id);
         } else {
             search();
-            this.debug && console.log("Buy no:" + quantity + ". Buy id:" + id);
         }
-
-        setTimeout(function () {
-            busy = false;
-        }, 2000);
     }
 
     function depositAll() {
         Chest.deposit_all();
-        setTimeout(function () {
-            busy = false;
-        }, 250);
     }
 
     function loadPet () {
         Mods.Petinv.load();
-        setTimeout(function () { busy = false; }, 350);
     }
 
     function unloadPet() {
         Mods.Petinv.unload();
-        setTimeout(function () { busy = false; }, 450);
     }
 
     //This is method executes coordinates defined in arrays
@@ -118,11 +107,7 @@ module PickAction {
         if (on_map[current_map][x][y] !== false) {
             selected_object = obj_g(on_map[current_map][x][y]);
             ActionMenu.act(0);
-        } else {
-            setTimeout(function () {
-                busy = false;
-            }, 300)
-        }
+        } 
     }
 
     //Looks through inventory and equips an item with passed ID
@@ -136,7 +121,6 @@ module PickAction {
                     break;
                 }
             }
-            setTimeout(function () { busy = false; }, 490);
         }, 200)
     }
 
@@ -152,11 +136,6 @@ module PickAction {
                 debug && console.log("Selected chest:" + selected_chest);
             }
         }
-
-        setTimeout(function () {
-            busy = false;
-        }, 300);
-
     }
 
     function eat() {
@@ -190,30 +169,24 @@ module PickAction {
                 busy = true;
                 if (typeof action == "object") {
                     if (!isNaN(action.buyId || action.buyQuantity)) {
-                        buy(action.buyId, action.buyQuantity);
-                        debug && console.log("Buy");
+                        buy(action.buyId, action.buyQuantity);                     
 
                     } else if (!isNaN(action.equipId)) {
                         equip(action.equipId);
-                        debug && console.log("Equip");
 
                     } else if (!isNaN(action.withdrawId)) {
                         withdraw(action.withdrawId, action.withdrawQuantity);
-                        debug && console.log("Withdraw");
 
                     } else if (action.j !== "undefined"
                         && action.i !== "undefined") {
                         actionAt(action.i, action.j);
-                        debug && console.log("ActionAt");
                     }
 
                 } else if (Array.isArray(action)) {
                     moveTo(action);
-                    debug && console.log("MoveTo");
                 } else if (typeof action === "string") {
                     if (action == "depositAll") {
-                        depositAll();
-                        debug && console.log("Deposit");                    
+                        depositAll();                 
                     } else if (action == "wait") {
                         wait = true;
                         var random = Math.random();
@@ -225,7 +198,6 @@ module PickAction {
 
                     }
                 }
-                debug && console.log("pickAction");
             }
         };
 
