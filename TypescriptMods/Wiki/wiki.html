@@ -1,0 +1,86 @@
+﻿<html>
+<head>
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script data-require="lodash.js@3.10.0" data-semver="3.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
+
+    <script data-require="angular.js@1.3.x" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js" data-semver="1.3.8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.7/smart-table.min.js"></script>
+    <script src="wiki.js"></script>
+    <script src="controller.js"></script>
+
+    <title>RPG MO WIKI by Manawei</title>
+    <meta charset="utf-8" />
+</head>
+<body ng-app="wikiApp" ng-controller="ItemListCtrl">
+    <!--
+    <table>
+        <tr ng-repeat="item in items">
+            <td class="image" ng-style=" getBackgroundStyle(item.img.sheet, item.img.x, item.img.y) "></td>
+            <td>{{item.name | uppercase}}</td>
+            <td>{{ item.params.price}}</td>
+        </tr>
+    </table>
+    -->
+
+    <div ng-repeat="category in itemCategories">
+        <p>{{category.name}}</p>
+        <table st-table="category.items" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th><button type="button" ng-click="hideTable = !hideTable" ng-model="hideTable">{{hideTable === true ? "Hide" : "Show"}}</button></th>
+                    <th>Name</th>
+                    <th st-sort="price">Price</th>
+                    <th st-sort="aim">Aim</th>
+                    <th st-sort="power">Power</th>
+                    <th st-sort="armour">Armour</th>
+                    <th st-sort="magic">Magic</th>
+                </tr>
+                <tr ng-show="hideTable">
+                    <th>
+                    </th>
+                    <th>
+                        <input st-search="name" placeholder="search for firstname" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="price" placeholder="search for price" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="aim" placeholder="search for aim" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="power" placeholder="search for power" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="armour" placeholder="search for armour" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="magic" placeholder="search for magic" class="input-sm form-control" type="search" />
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody ng-show="hideTable">
+
+                <tr ng-repeat="item in category.items">
+                    <td><div class="image" ng-style="getBackgroundStyle(items[item.id].img.sheet, items[item.id].img.x, items[item.id].img.y);"></div> </td>
+                    <td>{{items[item.id].name | uppercase}}</td>
+                    <td>{{items[item.id].params.price | currency}}</td>
+                    <td>{{items[item.id].params.aim}}</td>
+                    <td>{{items[item.id].params.power}}</td>
+                    <td>{{items[item.id].params.armor}}</td>
+                    <td>{{items[item.id].params.magic}}</td>
+                    <!-- <td ng-repeat="(key, value) in items[item.id].params">{{value}}</td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</body>
+</html>

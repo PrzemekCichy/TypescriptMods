@@ -17,20 +17,54 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="npmPlaceholder.txt" />
     <Content Include="web.config" />
+    <Content Include="Wiki\images\alchemyitems2.gif" />
+    <Content Include="Wiki\images\animals.gif" />
+    <Content Include="Wiki\images\boss.gif" />
+    <Content Include="Wiki\images\boss2.gif" />
+    <Content Include="Wiki\images\boss3.gif" />
+    <Content Include="Wiki\images\boss4.gif" />
+    <Content Include="Wiki\images\capes.gif" />
+    <Content Include="Wiki\images\dgmisc2.gif" />
+    <Content Include="Wiki\images\dgmisc3.gif" />
+    <Content Include="Wiki\images\dgmisc32.gif" />
+    <Content Include="Wiki\images\dgmisc4.gif" />
+    <Content Include="Wiki\images\dgmisc5.gif" />
+    <Content Include="Wiki\images\dgweapon2.gif" />
+    <Content Include="Wiki\images\dgweapon32.gif" />
+    <Content Include="Wiki\images\dg_armor2.gif" />
+    <Content Include="Wiki\images\dg_armor32.gif" />
+    <Content Include="Wiki\images\dg_food32.gif" />
+    <Content Include="Wiki\images\dg_jewls32.gif" />
+    <Content Include="Wiki\images\fish_new32.gif" />
+    <Content Include="Wiki\images\halloween.gif" />
+    <Content Include="Wiki\images\house_inv.gif" />
+    <Content Include="Wiki\images\mspell.gif" />
+    <Content Include="Wiki\images\mweapons.gif" />
+    <Content Include="Wiki\images\pets.gif" />
+    <Content Include="Wiki\images\tools.gif" />
+    <Content Include="Wiki\JavaScript.js" />
+    <Content Include="Wiki\stylesheet.css" />
+    <Content Include="Wiki\wiki.html" />
+    <Content Include="Wiki\wiki.js" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Action.ts" />
-    <TypeScriptCompile Include="file1.ts" />
     <TypeScriptCompile Include="LookUp.ts" />
     <TypeScriptCompile Include="MarketAnalysis.ts" />
+    <TypeScriptCompile Include="Wiki\controller.ts" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".bin\node.cmd" />
+    <Content Include="packages.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -73,4 +107,11 @@
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="..\packages\Npm.js.2.13.1.0\build\npm.js.targets" Condition="Exists('..\packages\Npm.js.2.13.1.0\build\npm.js.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Npm.js.2.13.1.0\build\npm.js.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Npm.js.2.13.1.0\build\npm.js.targets'))" />
+  </Target>
 </Project>

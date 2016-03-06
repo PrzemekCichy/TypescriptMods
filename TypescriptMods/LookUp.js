@@ -1,27 +1,26 @@
-function convertInput(userInput) {
-    var actionArray = userInput.split("|");
-    var actionParameterArray = [];
-    //Callback in typescript, need to look more into those
-    actionArray.forEach(function (parameter) {
-        actionParameterArray.push(parameter.split(":"));
-    });
-    return actionParameterArray;
-}
-var o1 = convertInput("Gather:Sand | Destroy:Empty Medium Vial: Empty Small Vial: Uncut High Grade Crystal");
-var o2 = convertInput("Gather: Coal:20:Iron:20 | Smelt:Coal:Iron | Destroy:Steel Bar");
-var o3 = convertInput("Buy: Iron: 20 | Withdraw: Coal:20 | Smelt: Iron: Coal | Deposit: Steel Bar");
+//Precondition: Pass a string with actions
+//PpostCondition: create object which contains data to execute by engine
 var AutoSkill;
 (function (AutoSkill) {
+    function convertInput(userInput) {
+        var actionArray = userInput.split("|");
+        var actionParameterArray = [];
+        //Callback in typescript, need to look more into those
+        actionArray.forEach(function (parameter) {
+            actionParameterArray.push(parameter.split(":"));
+        });
+        return actionParameterArray;
+    }
     var LookUp = (function () {
         //Create an instance of lookUp, which will contain steps requires to complete
         //a given action with certain parameters
         //Most methods run once, the purpose of this class is to calculate most important steps 
-        function LookUp(action, params) {
+        function LookUp(action) {
+            this.actionParameterArray = [];
             this.action = function () { }; //Fishing();
             this.paramsId = [];
             this.objectsFound = [];
             this.actionType = action;
-            this.params = params;
             this.getAction();
             this.action();
             this.searchLoop();
@@ -32,34 +31,6 @@ var AutoSkill;
             switch (this.actionType) {
                 case ("Gather"):
                     this.action = this.gather;
-                    break;
-                case ("Smelt"):
-                    this.action = this.gather;
-                    break;
-                case ("Cook"):
-                    this.action = this.gather;
-                    break;
-                case ("Fight"):
-                    this.action = this.gather;
-                    break;
-                case ("Withdraw"):
-                    this.action = this.gather;
-                    break;
-                case ("Deposit"):
-                    this.action = this.gather;
-                    break;
-                case ("Buy"):
-                    this.action = this.gather;
-                    break;
-                case ("Destroy"):
-                    this.action = this.gather;
-                    break;
-                case ("Forge"):
-                    this.action = this.gather;
-                    break;
-                case ("Craft"):
-                    this.action = this.gather;
-                    break;
             }
         };
         //Find object which matches the property from params array
@@ -123,6 +94,5 @@ var AutoSkill;
     })();
     AutoSkill.LookUp = LookUp;
 })(AutoSkill || (AutoSkill = {}));
-var test = new AutoSkill.LookUp("Gathering", ["Sand"]);
-var test1 = new AutoSkill.LookUp("Gathering", ["Furnace"]);
+var test = new AutoSkill.LookUp("Buy: Iron: 20 | Withdraw: coal:20 | smelt: Iron: Coal | deposit: Steel Bar");
 //# sourceMappingURL=LookUp.js.map
