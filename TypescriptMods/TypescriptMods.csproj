@@ -52,6 +52,7 @@
     <Content Include="Wiki\images\pets.gif" />
     <Content Include="Wiki\images\tools.gif" />
     <Content Include="Wiki\JavaScript.js" />
+    <Content Include="Wiki\map0.js" />
     <Content Include="Wiki\stylesheet.css" />
     <Content Include="Wiki\wiki.html" />
     <Content Include="Wiki\wiki.js" />

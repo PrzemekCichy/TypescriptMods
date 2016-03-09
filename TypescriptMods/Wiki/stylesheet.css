@@ -18,3 +18,16 @@ table tr:nth-child(even) {
     height: 32px;
     padding: 0;
 }
+#Maps{
+    max-width:1920px;
+    max-height:1080px;
+    overflow:scroll;
+}
+
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
