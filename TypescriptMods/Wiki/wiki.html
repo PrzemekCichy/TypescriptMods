@@ -24,7 +24,9 @@
 	<div id="Maps" >
         <div ng-controller="MapsCtrl"><button ng-click="render(0)">VBUTTTTOOOOON</button></div>
 
+        <canvas id="topTilesCanvas" width="5400" height="3000"></canvas>
 		<canvas id="groundTilesCanvas" width="5400" height="3000" ></canvas>
+
 	</div>
     <!--
     <table>
@@ -38,8 +40,8 @@
 
     <div ng-repeat="category in itemCategories">
         <p>{{category.name}}</p>
-        <table st-table="category.items" class="table table-bordered table-striped">
-            <thead>
+        <table st-table="category.items" class="table table-sm table-bordered table-hover">
+            <thead >
                 <tr>
                     <th><button type="button" ng-click="hideTable = !hideTable" ng-model="hideTable">{{hideTable === true ? "Hide" : "Show"}}</button></th>
                     <th>Name</th>

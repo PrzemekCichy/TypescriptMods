@@ -4,6 +4,7 @@ declare var categoriesFromString;
 declare var groundBaseFromString;
 declare var $;
 var map_json = map_json || [];
+var on_map_json = on_map_json || [];
 
 
 var wikiApp = angular.module('wikiApp', ['smart-table']);
@@ -53,19 +54,23 @@ wikiApp.controller('MapsCtrl', function ($scope) {
     var groundTilesCanvas:any = document.getElementById("groundTilesCanvas");
     var ctxGround = groundTilesCanvas.getContext('2d');
 
+    var topTilesCanvas: any = document.getElementById("topTilesCanvas");
+    var ctxTop = groundTilesCanvas.getContext('2d');
+
     $scope.groundBase = groundBaseFromString;
-    var map_id = 0;
-    $scope.maps = map_json[map_id];
 
     var imgGround = new Image();
     imgGround.src = "https://1239889624.rsc.cdn77.org/sheet/ground.gif";
+    var imgGroundTop = new Image();
+    imgGroundTop.src = "images/new/pots_crates.gif";
 
-    $scope.render = function () {
-        var offsetX = 0;
-        var offsetY = 0;
+    $scope.render = function (map_id) {
+        var offsetX = 0, offsetY = 0, tile;
+
         $scope.maps = map_json[map_id];
+        $scope.mapsTop = on_map_json[map_id];
 
-        var tile;
+        
         for (var xx = 100; xx < 10000; xx += 100) {
             for (var yx = 1; yx < 100; yx++) {
                 tile = xx - yx;
@@ -74,11 +79,11 @@ wikiApp.controller('MapsCtrl', function ($scope) {
                 offsetY = 0 + 14 * (99-$scope.maps[tile].j);
                 offsetY += 14 * (($scope.maps[tile].i));
                 ctxGround.drawImage(imgGround, $scope.groundBase[$scope.maps[tile].b_i].img.x * 54, $scope.groundBase[$scope.maps[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
-
+                ctxTop.drawImage(imgGroundTop, $scope.groundBase[$scope.mapsTop[tile].b_i].img.x * 54, $scope.groundBase[$scope.mapsTop[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
             }
         }
     }
-    var clicked = false, clickY;
+    var clicked = false, clickY, clickX;;
     $("#Maps").on({
         'mousemove': function (e) {
             clicked && updateScrollPos(e);
@@ -86,6 +91,7 @@ wikiApp.controller('MapsCtrl', function ($scope) {
         'mousedown': function (e) {
             clicked = true;
             clickY = e.pageY;
+            clickX = e.pageX;
         },
         'mouseup': function () {
             clicked = false;
@@ -95,7 +101,8 @@ wikiApp.controller('MapsCtrl', function ($scope) {
 
     var updateScrollPos = function (e) {
         $('#Maps').css('cursor', 'row-resize');
-        $(window).scrollTop($(window).scrollTop() + (clickY - e.pageY));
+        $('#Maps').scrollTop($('#Maps').scrollTop() + (clickY - e.pageY));
+        $('#Maps').scrollLeft($('#Maps').scrollLeft() + (clickX - e.pageX));
     }
 });
 
