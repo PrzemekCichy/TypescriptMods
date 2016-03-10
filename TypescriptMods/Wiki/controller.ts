@@ -55,14 +55,14 @@ wikiApp.controller('MapsCtrl', function ($scope) {
     var ctxGround = groundTilesCanvas.getContext('2d');
 
     var topTilesCanvas: any = document.getElementById("topTilesCanvas");
-    var ctxTop = groundTilesCanvas.getContext('2d');
+    var ctxTop = topTilesCanvas.getContext('2d');
 
     $scope.groundBase = groundBaseFromString;
 
     var imgGround = new Image();
     imgGround.src = "https://1239889624.rsc.cdn77.org/sheet/ground.gif";
     var imgGroundTop = new Image();
-    imgGroundTop.src = "images/new/pots_crates.gif";
+    imgGroundTop.src = "https://1239889624.rsc.cdn77.org/sheet/pots_crates.gif";
 
     $scope.render = function (map_id) {
         var offsetX = 0, offsetY = 0, tile;
@@ -79,9 +79,14 @@ wikiApp.controller('MapsCtrl', function ($scope) {
                 offsetY = 0 + 14 * (99-$scope.maps[tile].j);
                 offsetY += 14 * (($scope.maps[tile].i));
                 ctxGround.drawImage(imgGround, $scope.groundBase[$scope.maps[tile].b_i].img.x * 54, $scope.groundBase[$scope.maps[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
-                ctxTop.drawImage(imgGroundTop, $scope.groundBase[$scope.mapsTop[tile].b_i].img.x * 54, $scope.groundBase[$scope.mapsTop[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
+                
             }
         }
+        for (var i in $scope.mapsTop) {
+            //                ctxTop.drawImage(imgGroundTop, 7*54, 7*34, 54, 34, offsetX, offsetY, 54, 34);
+            ctxTop.drawImage(imgGroundTop, 3 * 54, 4 * 54, 54, 34, offsetX, offsetY, 54, 34);
+        }
+
     }
     var clicked = false, clickY, clickX;;
     $("#Maps").on({
