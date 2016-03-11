@@ -48,12 +48,13 @@ wikiApp.controller('MapsCtrl', function ($scope) {
     imgGround.src = "https://1239889624.rsc.cdn77.org/sheet/ground.gif";
     var imgGroundTop = new Image();
     imgGroundTop.src = "https://1239889624.rsc.cdn77.org/sheet/pots_crates.gif";
-    $scope.render = function (map_id) {
+    $scope.render = function () {
         var offsetX = 0, offsetY = 0, tile;
+        var map_id = 0;
         $scope.maps = map_json[map_id];
         $scope.mapsTop = on_map_json[map_id];
-        for (var xx = 100; xx < 10000; xx += 100) {
-            for (var yx = 1; yx < 100; yx++) {
+        for (var xx = 100; xx <= 10000; xx += 100) {
+            for (var yx = 1; yx <= 100; yx++) {
                 tile = xx - yx;
                 offsetX = 2700 + 27 * ($scope.maps[tile].i);
                 offsetX -= 27 * (99 - ($scope.maps[tile].j));
@@ -62,9 +63,19 @@ wikiApp.controller('MapsCtrl', function ($scope) {
                 ctxGround.drawImage(imgGround, $scope.groundBase[$scope.maps[tile].b_i].img.x * 54, $scope.groundBase[$scope.maps[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
             }
         }
-        for (var i in $scope.mapsTop) {
+        for (var tile in $scope.mapsTop) {
             //                ctxTop.drawImage(imgGroundTop, 7*54, 7*34, 54, 34, offsetX, offsetY, 54, 34);
-            ctxTop.drawImage(imgGroundTop, 3 * 54, 4 * 54, 54, 34, offsetX, offsetY, 54, 34);
+            offsetX = 27 + 27 * ($scope.mapsTop[tile].i);
+            offsetX += 27 * (($scope.mapsTop[tile].j));
+            offsetY = 1400 - 28 - 14 * ($scope.mapsTop[tile].j);
+            offsetY += 14 * (($scope.mapsTop[tile].i));
+            if ($scope.maps[tile].b_i < $scope.groundBase.length) {
+                //image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
+                ctxTop.drawImage(imgGroundTop, ($scope.groundBase[$scope.maps[tile].b_i].img.y + 1) * 54, ($scope.groundBase[$scope.maps[tile].b_i].img.x + 1) * 50, 54, 50, offsetX, offsetY, 54, 50);
+            }
+            else {
+                ctxTop.drawImage(imgGroundTop, 54, 50, 54, 50, offsetX, offsetY, 54, 50);
+            }
         }
     };
     var clicked = false, clickY, clickX;
