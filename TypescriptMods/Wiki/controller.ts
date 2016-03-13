@@ -60,6 +60,8 @@ wikiApp.controller('MapsCtrl', function ($scope) {
     $scope.groundBase = groundBaseFromString;
 
     var imgGround = new Image();
+    imgGround.setAttribute('crossOrigin', 'anonymous');
+
     imgGround.src = "https://1239889624.rsc.cdn77.org/sheet/ground.gif";
     var imgGroundTop = new Image();
     imgGroundTop.src = "https://1239889624.rsc.cdn77.org/sheet/pots_crates.gif";
@@ -70,7 +72,7 @@ wikiApp.controller('MapsCtrl', function ($scope) {
         $scope.maps = map_json[map_id];
         $scope.mapsTop = on_map_json[map_id];
 
-        
+        //Rendres from top
         for (var xx = 100; xx <= 10000; xx += 100) {
             for (var yx = 1; yx <= 100; yx++) {
                 tile = xx - yx;
@@ -83,6 +85,15 @@ wikiApp.controller('MapsCtrl', function ($scope) {
             }
         }
         
+
+
+        var groundTilesCanvas;
+        function downloadCanvas(link, canvasId, filename) {
+            link.href = document.getElementById(canvasId).toDataURL();
+            link.download = filename;
+        }
+        downloadCanvas(this,"groundTilesCanvas","sadasd/png")
+
         for (var tile in $scope.mapsTop) {
             //                ctxTop.drawImage(imgGroundTop, 7*54, 7*34, 54, 34, offsetX, offsetY, 54, 34);
             offsetX = 27 + 27 * ($scope.mapsTop[tile].i);
@@ -93,7 +104,7 @@ wikiApp.controller('MapsCtrl', function ($scope) {
                 //image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
                 ctxTop.drawImage(imgGroundTop, ($scope.groundBase[$scope.maps[tile].b_i].img.y + 1) * 54, ($scope.groundBase[$scope.maps[tile].b_i].img.x + 1) * 50, 54, 50, offsetX, offsetY, 54, 50);
             } else {
-                ctxTop.drawImage(imgGroundTop, 54, 50, 54, 50, offsetX, offsetY, 54, 50);
+                //ctxTop.drawImage(imgGroundTop, 54, 50, 54, 50, offsetX, offsetY, 54, 50);
             }
         }
 
@@ -120,5 +131,24 @@ wikiApp.controller('MapsCtrl', function ($scope) {
         $('#Maps').scrollLeft($('#Maps').scrollLeft() + (clickX - e.pageX));
     }
 });
+
+
+wikiApp.controller('ScrollController', ['$scope', '$location', '$anchorScroll',
+        function ($scope, $location, $anchorScroll) {
+            $scope.gotoMaps = function () {
+                // set the location.hash to the id of
+                // the element you wish to scroll to.
+                $location.hash('mapsMenu');
+                // call $anchorScroll()
+                $anchorScroll();
+            };
+            $scope.gotoWiki = function () {
+                // set the location.hash to the id of
+                // the element you wish to scroll to.
+                $location.hash('wikiAnchor');
+                // call $anchorScroll()
+                $anchorScroll();
+            };
+        }]);
 
 //# sourceMappingURL=controller.js.map

@@ -24,8 +24,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FullInvCheck.js" />
     <Content Include="npmPlaceholder.txt" />
     <Content Include="web.config" />
+    <Content Include="Wiki\controller.js" />
     <Content Include="Wiki\images\alchemyitems2.gif" />
     <Content Include="Wiki\images\animals.gif" />
     <Content Include="Wiki\images\boss.gif" />
