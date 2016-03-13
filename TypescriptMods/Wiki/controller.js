@@ -6,6 +6,7 @@ wikiApp.controller('ItemListCtrl', function ($scope) {
     $scope.itemCategories = categoriesFromString;
     $scope.images = {
         0: 'https://1239889624.rsc.cdn77.org/sheet/ground.gif',
+        1: 'https://1239889624.rsc.cdn77.org/sheet/ground2.gif',
         5: 'images/dgweapon32.gif',
         6: 'images/dg_armor32.gif',
         7: 'images/dg_food32.gif',
@@ -38,20 +39,34 @@ wikiApp.controller('ItemListCtrl', function ($scope) {
     };
 });
 wikiApp.controller('MapsCtrl', function ($scope) {
+    $scope.mapNames = [{ "id": "0", "name": "Dorpat" }, { "id": "1", "name": "Dungeon I" }, { "id": "2", "name": "Narwa" }, { "id": "3", "name": "Whiland" }, { "id": "4", "name": "Reval" }, { "id": "5", "name": "Rakblood" }, { "id": "6", "name": "Blood River" }, { "id": "7", "name": "Hell" }, { "id": "8", "name": "Clouds" }, { "id": "9", "name": "Heaven" }, { "id": "10", "name": "Cesis" }, { "id": "11", "name": "Walco" }, { "id": "12", "name": "Tutorial Island" }, { "id": "13", "name": "Pernau" }, { "id": "14", "name": "Fellin" }, { "id": "15", "name": "Dragon's Lair" }, { "id": "16", "name": "No Man's Land" }, { "id": "17", "name": "Ancient Dungeon" }, { "id": "18", "name": "Lost Woods" }, { "id": "19", "name": "Minigames" }, { "id": "20", "name": "Broceliande Forest" }, { "id": "21", "name": "Devil's Triangle" }, { "id": "22", "name": "Cathedral" }, { "id": "23", "name": "Illusion Guild" }, { "id": "24", "name": "Every Man's Land" }, { "id": "25", "name": "Moche" }, { "id": "26", "name": "Wittensten" }, { "id": "27", "name": "Dungeon II" }, { "id": "28", "name": "Dungeon III" }, { "id": "29", "name": "Dungeon IV" }];
+    var loadMaps = function (a) {
+        var mapFile = document.createElement('script');
+        mapFile.setAttribute("type", "text/javascript");
+        mapFile.setAttribute("src", "https://1239889624.rsc.cdn77.org/maps/map" + a + ".js");
+        document.getElementsByTagName("head")[0].appendChild(mapFile);
+        console.log("https://1239889624.rsc.cdn77.org/maps/map" + a + ".js");
+    };
+    for (var i in $scope.mapNames) {
+        loadMaps(i);
+    }
     //Use <HTMLCanvasElement> or var groundTilesCanvas : any = document.getElementById("groundTilesCanvas");
     var groundTilesCanvas = document.getElementById("groundTilesCanvas");
     var ctxGround = groundTilesCanvas.getContext('2d');
     var topTilesCanvas = document.getElementById("topTilesCanvas");
     var ctxTop = topTilesCanvas.getContext('2d');
     $scope.groundBase = groundBaseFromString;
-    var imgGround = new Image();
-    imgGround.setAttribute('crossOrigin', 'anonymous');
-    imgGround.src = "https://1239889624.rsc.cdn77.org/sheet/ground.gif";
+    var imageGround = {};
+    imageGround[2] = new Image();
+    imageGround[2].src = "https://1239889624.rsc.cdn77.org/sheet/ground.gif";
+    imageGround[46] = new Image();
+    imageGround[46].src = "https://1239889624.rsc.cdn77.org/sheet/ground2.gif";
     var imgGroundTop = new Image();
     imgGroundTop.src = "https://1239889624.rsc.cdn77.org/sheet/pots_crates.gif";
-    $scope.render = function () {
+    $scope.render = function (map_id) {
+        ctxGround.clearRect(0, 0, groundTilesCanvas.width, groundTilesCanvas.height);
         var offsetX = 0, offsetY = 0, tile;
-        var map_id = 0;
+        var map_id = map_id || 0;
         $scope.maps = map_json[map_id];
         $scope.mapsTop = on_map_json[map_id];
         //Rendres from top
@@ -62,15 +77,10 @@ wikiApp.controller('MapsCtrl', function ($scope) {
                 offsetX -= 27 * (99 - ($scope.maps[tile].j));
                 offsetY = 0 + 14 * (99 - $scope.maps[tile].j);
                 offsetY += 14 * (($scope.maps[tile].i));
-                ctxGround.drawImage(imgGround, $scope.groundBase[$scope.maps[tile].b_i].img.x * 54, $scope.groundBase[$scope.maps[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
+                ctxGround.drawImage(imageGround[$scope.groundBase[$scope.maps[tile].b_i].img.sheet], $scope.groundBase[$scope.maps[tile].b_i].img.x * 54, $scope.groundBase[$scope.maps[tile].b_i].img.y * 34, 54, 34, offsetX, offsetY, 54, 34);
             }
         }
-        var groundTilesCanvas;
-        function downloadCanvas(link, canvasId, filename) {
-            link.href = document.getElementById(canvasId).toDataURL();
-            link.download = filename;
-        }
-        downloadCanvas(this, "groundTilesCanvas", "sadasd/png");
+        /*
         for (var tile in $scope.mapsTop) {
             //                ctxTop.drawImage(imgGroundTop, 7*54, 7*34, 54, 34, offsetX, offsetY, 54, 34);
             offsetX = 27 + 27 * ($scope.mapsTop[tile].i);
@@ -80,10 +90,11 @@ wikiApp.controller('MapsCtrl', function ($scope) {
             if ($scope.maps[tile].b_i < $scope.groundBase.length) {
                 //image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
                 ctxTop.drawImage(imgGroundTop, ($scope.groundBase[$scope.maps[tile].b_i].img.y + 1) * 54, ($scope.groundBase[$scope.maps[tile].b_i].img.x + 1) * 50, 54, 50, offsetX, offsetY, 54, 50);
-            }
-            else {
+            } else {
+                //ctxTop.drawImage(imgGroundTop, 54, 50, 54, 50, offsetX, offsetY, 54, 50);
             }
         }
+        */
     };
     var clicked = false, clickY, clickX;
     ;
