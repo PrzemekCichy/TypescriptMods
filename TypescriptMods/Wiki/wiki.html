@@ -24,15 +24,15 @@
     <meta charset="utf-8" />
 </head>
 <body ng-app="wikiApp" ng-controller="ItemListCtrl">
-    
+
     <div id="mapsMenu" class="panel panel-success" ng-controller="MapsCtrl">
-        <button ng-controller="ScrollController"  class="btn btn-success" ng-click="gotoWiki()">Jump to Wiki</button>
+        <button ng-controller="ScrollController" class="btn btn-success" ng-click="gotoWiki()">Jump to Wiki</button>
         <div id="scrollArea" ng-repeat="map  in mapNames">
             <button class="btn btn-info mapBtn" ng-click="render(map.id)">{{map.name}}</button>
         </div>
     </div>
 
-    <div id="Maps">  
+    <div id="Maps">
         <canvas id="groundTilesCanvas" width="5400" height="3000"></canvas>
         <canvas id="topTilesCanvas" width="5400" height="3000"></canvas>
     </div>
@@ -54,7 +54,7 @@
 
         <div class="panel-heading">{{category.name}}</div>
         <table st-table="category.items" class="table table-sm table-bordered table-hover">
-                
+
             <thead>
                 <tr>
                     <th><button type="button" class="btn btn-info" ng-click="hideTable = !hideTable" ng-model="hideTable">{{hideTable === true ? "Hide" : "Show"}}</button></th>
@@ -105,6 +105,69 @@
         </table>
     </div>
 
+    <div>
+
+
+        <div class="panel-heading">Monsters</div>
+        <table st-table="mobList" class="table table-sm table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th><button type="button" class="btn btn-info" ng-click="hideTable = !hideTable" ng-model="hideTable">{{hideTable === true ? "Hide" : "Show"}}</button></th>
+                    <th st-sort="name">Name</th>
+                    <th st-sort="level">Level</th>
+                    <th st-sort="accuracy">Accuracy</th>
+                    <th st-sort="strength">Strength</th>
+                    <th st-sort="defense">Defense</th>
+                    <th st-sort="loot">Magic</th>
+                    
+                </tr>
+                <tr ng-show="hideTable">
+                    <th>
+                    </th>
+                    <th>
+                        <input st-search="name" placeholder="search for Name" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="level" placeholder="search for Level" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="accuracy" placeholder="search for Accuracy" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="strength" placeholder="search for Strength" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="defense" placeholder="search for Defence" class="input-sm form-control" type="search" />
+                    </th>
+                    <th>
+                        <input st-search="loot" placeholder="search for Loot" class="input-sm form-control" type="search" />
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody ng-show="hideTable">
+
+                <tr ng-repeat="mob in mobList">
+                    <td><div class="image"></div> </td>
+                    <td>{{mob.name}}</td>
+                    <td>{{mob.params.combat_level}}</td>
+                    <td>{{mob.temp.health}}</td>
+                    <td>{{mob.temp.total_accuracy}}</td>
+                    <td>{{mob.temp.total_strength}}</td>
+                    <td>{{mob.temp.total_defense}}</td>
+                    <td>{{mob.temp.melee_block}}</td>
+                    <td>{{mob.temp.magic_block}}</td>
+                    <td>{{mob.temp.magics[0].id}}</td>
+                    <td ng-repeat="(key, value) in mob.params.drops">
+                    <div class="image" ng-style="getBackgroundStyle(items[value.id].img.sheet, items[value.id].img.x, items[value.id].img.y);"></div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
 
 </body>
 </html>

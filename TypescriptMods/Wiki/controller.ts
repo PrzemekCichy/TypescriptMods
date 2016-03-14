@@ -11,7 +11,7 @@ var wikiApp = angular.module('wikiApp', ['smart-table']);
 wikiApp.controller('ItemListCtrl', function ($scope) {
     $scope.items = itemsFromString;
     $scope.itemCategories = categoriesFromString;
-
+    $scope.mobList = baseNPCFromString;
     $scope.images = {
         0: 'https://1239889624.rsc.cdn77.org/sheet/ground.gif',
         1: 'https://1239889624.rsc.cdn77.org/sheet/ground2.gif',
@@ -60,12 +60,11 @@ wikiApp.controller('MapsCtrl', function ($scope) {
         mapFile.setAttribute("type", "text/javascript");
         mapFile.setAttribute("src", "https://1239889624.rsc.cdn77.org/maps/map" + a + ".js");
         document.getElementsByTagName("head")[0].appendChild(mapFile);
-        console.log("https://1239889624.rsc.cdn77.org/maps/map" + a + ".js")
+        for (var i in $scope.mapNames) {
+            loadMaps(i);
+        }
      }
 
-      for (var i in $scope.mapNames) {
-          loadMaps(i);
-      }
 
      //Use <HTMLCanvasElement> or var groundTilesCanvas : any = document.getElementById("groundTilesCanvas");
     var groundTilesCanvas:any = document.getElementById("groundTilesCanvas");
