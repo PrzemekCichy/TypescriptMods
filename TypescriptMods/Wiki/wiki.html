@@ -17,9 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.7/smart-table.min.js"></script>
     <script src="wiki.js"></script>
     <script src="controller.js"></script>
-    <script src="http://rpg.mo.ee/maps/map29.js"></script>
-    <script src="http://rpg.mo.ee/maps/map1.js"></script>
-    <script src="http://rpg.mo.ee/maps/map2.js"></script>
     <title>RPG MO WIKI by Manawei</title>
     <meta charset="utf-8" />
 </head>
@@ -113,16 +110,21 @@
 
             <thead>
                 <tr>
-                    <th><button type="button" class="btn btn-info" ng-click="hideTable = !hideTable" ng-model="hideTable">{{hideTable === true ? "Hide" : "Show"}}</button></th>
+                    <th><button type="button" class="btn btn-info" ng-click="hideMonsterTable = !hideMonsterTable" ng-model="hideMonsterTable">{{hideMonsterTable === true ? "Hide" : "Show"}}</button></th>
                     <th st-sort="name">Name</th>
                     <th st-sort="level">Level</th>
+					<th st-sort="health">Health</th>
                     <th st-sort="accuracy">Accuracy</th>
                     <th st-sort="strength">Strength</th>
                     <th st-sort="defense">Defense</th>
+					<th st-sort="meleeBlock">Melee Block</th>
+					<th st-sort="magicBlock">Magic Block</th>
+					<th st-sort="spell">Spell</th>
                     <th st-sort="loot">Magic</th>
+					<th st-sort="loot">Loot</th>
                     
                 </tr>
-                <tr ng-show="hideTable">
+                <tr ng-show="hideMonsterTable">
                     <th>
                     </th>
                     <th>
@@ -131,6 +133,9 @@
                     <th>
                         <input st-search="level" placeholder="search for Level" class="input-sm form-control" type="search" />
                     </th>
+					<th>
+						<input st-search="health" placeholder="search for Health" class="input-sm form-control" type="search" />
+					</th>
                     <th>
                         <input st-search="accuracy" placeholder="search for Accuracy" class="input-sm form-control" type="search" />
                     </th>
@@ -138,18 +143,27 @@
                         <input st-search="strength" placeholder="search for Strength" class="input-sm form-control" type="search" />
                     </th>
                     <th>
-                        <input st-search="defense" placeholder="search for Defence" class="input-sm form-control" type="search" />
+                        <input st-search="defense" placeholder="search for Defense" class="input-sm form-control" type="search" />
                     </th>
+					<th>
+						<input st-search="meleeBLock" placeholder="search for Melee Block" class="input-sm form-control" type="search" />
+					</th>
+					<th>
+						<input st-search="magicBlock" placeholder="search for Magic Block" class="input-sm form-control" type="search" />
+					</th>
+					<th>
+						<input st-search="spell" placeholder="search for Spell" class="input-sm form-control" type="search" />
+					</th>
                     <th>
                         <input st-search="loot" placeholder="search for Loot" class="input-sm form-control" type="search" />
                     </th>
                 </tr>
             </thead>
 
-            <tbody ng-show="hideTable">
+            <tbody ng-show="hideMonsterTable">
 
                 <tr ng-repeat="mob in mobList">
-                    <td><div class="image"></div> </td>
+					<td><div class="image" ng-style="getBackgroundStyle(mob.img.sheet, mob.img.x, mob.img.y);"></div> </td>
                     <td>{{mob.name}}</td>
                     <td>{{mob.params.combat_level}}</td>
                     <td>{{mob.temp.health}}</td>
@@ -160,7 +174,7 @@
                     <td>{{mob.temp.magic_block}}</td>
                     <td>{{mob.temp.magics[0].id}}</td>
                     <td ng-repeat="(key, value) in mob.params.drops">
-                    <div class="image" ng-style="getBackgroundStyle(items[value.id].img.sheet, items[value.id].img.x, items[value.id].img.y);"></div>
+                    <div class="image" ng-style="getBackgroundStyle(items[value.id].img.sheet, items[value.id].img.x, items[value.id].img.y);"></div><div>0.35%</div>
                     </td>
                 </tr>
             </tbody>

@@ -23,14 +23,13 @@ wikiApp.controller('ItemListCtrl', function ($scope) {
         33: 'images/mweapons.gif',
         38: 'images/pets.gif',
         42: 'images/house_inv.gif',
+        45: "https://1239889624.rsc.cdn77.org/sheet/halloween.gif?f0cb8b948f34abd9e2b99baac244c6d3rpg.mo.ee",
         52: 'images/dgmisc2.gif',
         53: 'images/dgmisc3.gif',
         54: 'images/dgmisc4.gif',
         55: 'images/dgmisc5.gif',
         56: 'images/dg_armor2.gif'
     };
-    $scope.predicates = ['name', 'lastName', 'birthDate', 'balance', 'email'];
-    $scope.selectedPredicate = $scope.predicates[0];
     $scope.getBackgroundStyle = function (imagePath, x, y) {
         var url = 'url(' + $scope.images[imagePath] + ')';
         return {
@@ -46,10 +45,10 @@ wikiApp.controller('MapsCtrl', function ($scope) {
         mapFile.setAttribute("type", "text/javascript");
         mapFile.setAttribute("src", "https://1239889624.rsc.cdn77.org/maps/map" + a + ".js");
         document.getElementsByTagName("head")[0].appendChild(mapFile);
-        for (var i in $scope.mapNames) {
-            loadMaps(i);
-        }
     };
+    for (var i in $scope.mapNames) {
+        loadMaps(i);
+    }
     //Use <HTMLCanvasElement> or var groundTilesCanvas : any = document.getElementById("groundTilesCanvas");
     var groundTilesCanvas = document.getElementById("groundTilesCanvas");
     var ctxGround = groundTilesCanvas.getContext('2d');
