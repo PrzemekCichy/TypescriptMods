@@ -27,48 +27,15 @@
     <Content Include="other\FullInvCheck.js" />
     <Content Include="npmPlaceholder.txt" />
     <Content Include="PetMod\petMod.html" />
+    <Content Include="PetMod\releasePetMod.js" />
     <Content Include="PetMod\stylesheet.css" />
     <Content Include="web.config" />
-    <Content Include="Wiki\images\alchemyitems2.gif" />
-    <Content Include="Wiki\images\animals.gif" />
-    <Content Include="Wiki\images\boss.gif" />
-    <Content Include="Wiki\images\boss2.gif" />
-    <Content Include="Wiki\images\boss3.gif" />
-    <Content Include="Wiki\images\boss4.gif" />
-    <Content Include="Wiki\images\capes.gif" />
-    <Content Include="Wiki\images\dgmisc2.gif" />
-    <Content Include="Wiki\images\dgmisc3.gif" />
-    <Content Include="Wiki\images\dgmisc32.gif" />
-    <Content Include="Wiki\images\dgmisc4.gif" />
-    <Content Include="Wiki\images\dgmisc5.gif" />
-    <Content Include="Wiki\images\dgweapon2.gif" />
-    <Content Include="Wiki\images\dgweapon32.gif" />
-    <Content Include="Wiki\images\dg_armor2.gif" />
-    <Content Include="Wiki\images\dg_armor32.gif" />
-    <Content Include="Wiki\images\dg_food32.gif" />
-    <Content Include="Wiki\images\dg_jewls32.gif" />
-    <Content Include="Wiki\images\fish_new32.gif" />
-    <Content Include="Wiki\images\halloween.gif" />
-    <Content Include="Wiki\images\house_inv.gif" />
-    <Content Include="Wiki\images\mspell.gif" />
-    <Content Include="Wiki\images\mweapons.gif" />
-    <Content Include="Wiki\images\pets.gif" />
-    <Content Include="Wiki\images\tools.gif" />
-    <Content Include="Wiki\JavaScript.js" />
-    <Content Include="Wiki\DataExtract.js" />
-    <Content Include="Wiki\map0.js" />
-    <Content Include="Wiki\stylesheet.css" />
-    <Content Include="Wiki\views\maps.html" />
-    <Content Include="Wiki\views\wiki.html" />
-    <Content Include="Wiki\index.html" />
-    <Content Include="Wiki\wiki.js" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="other\Action.ts" />
     <TypeScriptCompile Include="other\LookUp.ts" />
     <TypeScriptCompile Include="other\MarketAnalysis.ts" />
     <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
-    <TypeScriptCompile Include="Wiki\controllers\controller.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".bin\node.cmd" />
@@ -80,9 +47,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Wiki\directives\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
