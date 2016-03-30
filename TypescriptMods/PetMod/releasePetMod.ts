@@ -1,4 +1,4 @@
-﻿declare var createElem, wrapper, getElem, breeding_pair_template, Handlebars, pet_nest, Breeding, pets;
+﻿declare var createElem, wrapper, getElem, breeding_pair_template, Handlebars, pet_nest, Breeding, pets, on_map, IMAGE_SHEET, players, $;
 
 module modBreeding {
 
@@ -46,7 +46,7 @@ module modBreeding {
 					<div class='barHolder'>\
 						<div id='pet{{@index}}_0_hunger' class='hunger'></div>\
 						<div id='pet{{@index}}_0_happiness' class='happiness'></div>\
-						<div class='barTextHolder'>Hunger\
+						<div id='pet{{@index}}_0_update' class='barTextHolder'>Hunger\
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_0_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 0)'>Breed</button>\
@@ -57,7 +57,7 @@ module modBreeding {
 					<div class='barHolder'>\
 						<div id='pet{{@index}}_1_hunger' class='hunger'></div>\
 						<div id='pet{{@index}}_1_happiness' class='happiness'></div>\
-						<div class='barTextHolder'>Hunger\
+						<div id='pet{{@index}}_1_update' class='barTextHolder'>Hunger\
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_1_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 1)'>Breed</button>\
@@ -151,6 +151,10 @@ module modBreeding {
                 getElem('pet' + i + '_0_hunger').style.width = getHunger(i, 0) + "%";
                 getElem('pet' + i + '_1_happiness').style.width = getHappiness(i, 1) + "%";
                 getElem('pet' + i + '_0_happiness').style.width = getHappiness(i, 0) + "%";
+
+                getElem('pet' + i + '_0_update').innerHTML = "Hunger " + getHunger(i, 0) + "%" + "<br/>Happiness" + getHappiness(i, 0) + "%";
+                getElem('pet' + i + '_1_update').innerHTML = "Hunger " + getHunger(i, 1) + "%" + "<br/>Happiness" + getHappiness(i, 1) + "%";
+
                 if (nestPairs[i][0].params.pet_id !== undefined){
                     getElem('pet' + i + '_0_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][0].params.pet_id].img.sheet].url + ")";
                     getElem('pet' + i + '_0_petPic').style.backgroundPosition = -(pets[nestPairs[i][0].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][0].params.pet_id].img.y * 32) + "px";

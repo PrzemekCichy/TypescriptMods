@@ -24,7 +24,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="other\FullInvCheck.js" />
     <Content Include="npmPlaceholder.txt" />
     <Content Include="PetMod\petMod.html" />
     <Content Include="PetMod\releasePetMod.js" />
@@ -32,9 +31,6 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="other\Action.ts" />
-    <TypeScriptCompile Include="other\LookUp.ts" />
-    <TypeScriptCompile Include="other\MarketAnalysis.ts" />
     <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
   </ItemGroup>
   <ItemGroup>
