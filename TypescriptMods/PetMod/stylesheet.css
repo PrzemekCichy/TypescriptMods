@@ -1,0 +1,118 @@
+﻿#petHelperHolder {
+    text-shadow: 4px 2px 6px #2B3336;
+    position:relative;
+    color: #F2F2F2;
+    width: 520px;
+    min-height: 200px;
+    max-height: 850px;
+    height: auto;
+    margin: auto;
+    background: #1d1f20;
+    border-style: solid;
+    border-color: #2B3336;
+    z-index: 11111111;
+    position: absolute;
+    overflow: auto;
+    top: 0;
+    right: 0;
+}
+.pair {
+    overflow: auto;
+    width:498px;
+    margin: auto;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    background: #3d3d3d;
+    display:block;
+}
+.pet {
+    background: #1d1f20;
+    text-align: center;
+    position: relative;
+    border: 1px solid #3d3d3d;
+    float : left;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    height:34px;
+    width: 49%;
+    vertical-align: middle;
+    margin-left: 2px;
+}
+.petPic {
+    background: #3d3d3d;
+    border-right: 1px solid #3d3d3d;
+    height: 34px;
+    width: 34px;
+    position: absolute;
+}
+.barHolder {
+    position: absolute;
+    border: none;
+    height: 34px;
+    width: 60.5%;
+    margin-left: 34px;
+    border-right: 1px solid #3d3d3d;
+}
+.hunger {
+    background: rgb(191, 76, 76);
+    height:17px;
+    width:10%;
+}
+.happiness {
+    background: #019249;
+    height: 17px;
+    width: 100%;
+}
+.breed {
+    position: absolute;
+    left: 75%;
+    color: #F2F2F2;
+    border: none;
+    background: #222;
+    height: 17px;
+    width: 25%;
+}
+.feed {
+    position: absolute;
+    top: 17px;
+    left: 75%;
+    color: #F2F2F2;
+    border: none;
+    background: #222;
+    height: 17px;
+    width: 25%;
+}
+.breed:hover {
+    background: #3d3d3d;
+}
+.petMenu {
+    width: 100%;
+    height: 16px;
+    background: #1d1f20;
+}
+.close {
+    color: #F2F2F2;
+    float: right;
+    position: static;
+    border: none;
+    background: #1d1f20;
+    height: 16px;
+    width: 15%;
+    font-size: 12px;
+}
+button:hover {
+    background: #3d3d3d;
+}
+.petPic:hover {
+    background-size: 40px;
+}
+.barTextHolder {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    top: -34px;
+    position: relative;
+    text-align: center;
+    border: none;
+    color: #F2F2F2;
+    height: 34px;
+}

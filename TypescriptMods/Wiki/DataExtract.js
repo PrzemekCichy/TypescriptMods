@@ -9,3 +9,5 @@ for (var i in map_names) {
 }
 
 JSON.stringify(mapNames);
+JSON.stringify(BODY_PARTS);
+JSON.stringify(IMAGE_SHEET);

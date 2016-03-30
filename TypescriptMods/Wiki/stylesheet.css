@@ -10,6 +10,9 @@ table tr:nth-child(even) {
   background-color: #ffffff;
 }
 */
+table{
+    max-width: 100%;
+}
 canvas{
   position:absolute;
   top: 10px;

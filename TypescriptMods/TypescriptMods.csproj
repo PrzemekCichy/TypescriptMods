@@ -24,10 +24,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FullInvCheck.js" />
+    <Content Include="other\FullInvCheck.js" />
     <Content Include="npmPlaceholder.txt" />
+    <Content Include="PetMod\petMod.html" />
+    <Content Include="PetMod\stylesheet.css" />
     <Content Include="web.config" />
-    <Content Include="Wiki\controller.js" />
     <Content Include="Wiki\images\alchemyitems2.gif" />
     <Content Include="Wiki\images\animals.gif" />
     <Content Include="Wiki\images\boss.gif" />
@@ -57,14 +58,17 @@
     <Content Include="Wiki\DataExtract.js" />
     <Content Include="Wiki\map0.js" />
     <Content Include="Wiki\stylesheet.css" />
-    <Content Include="Wiki\wiki.html" />
+    <Content Include="Wiki\views\maps.html" />
+    <Content Include="Wiki\views\wiki.html" />
+    <Content Include="Wiki\index.html" />
     <Content Include="Wiki\wiki.js" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Action.ts" />
-    <TypeScriptCompile Include="LookUp.ts" />
-    <TypeScriptCompile Include="MarketAnalysis.ts" />
-    <TypeScriptCompile Include="Wiki\controller.ts" />
+    <TypeScriptCompile Include="other\Action.ts" />
+    <TypeScriptCompile Include="other\LookUp.ts" />
+    <TypeScriptCompile Include="other\MarketAnalysis.ts" />
+    <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
+    <TypeScriptCompile Include="Wiki\controllers\controller.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".bin\node.cmd" />
@@ -75,6 +79,9 @@
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Wiki\directives\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
