@@ -50,7 +50,7 @@ module modBreeding {
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_0_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 0)'>Breed</button>\
-				   <button id='pet{{@index}}_0_feed' class='feed' onclick = 'modBreeding.feedPet({{@index}}, 0)'>Feed</button>\
+				   <button id='pet{{@index}}_0_feed' class='feed' onclick = 'modBreeding.feedPet({{@index}}, 0)'>Pet {{@index}}</button>\
 				</div>\
 				<div id='pet{{@index}}_1' class='pet'>\
 				  <div id='pet{{@index}}_1_petPic' class='petPic' onclick='modBreeding.openNest({{@index}}, 1);'></div>\
@@ -109,20 +109,6 @@ module modBreeding {
 
             }
         }
-
-        //Ensure there are no duplicates
-        //DOESNT SEEM TO BE NECCESSARY?????
-        /*
-        for (var pairIndex1 = 0; pairIndex1 < nestPairs.length; pairIndex1++) {
-            var temp1 = nestPairs[pairIndex1][0];
-            var temp2 = nestPairs[pairIndex1][1];
-            for (var pairIndex = 0; pairIndex < nestPairs.length; pairIndex++) {
-                if (temp1 == nestPairs[pairIndex][1] && temp2 == nestPairs[pairIndex][0]) {
-                    nestPairs.splice(pairIndex, 1);
-                }
-            }
-        }
-        */
         return this;
     };
 
@@ -155,20 +141,24 @@ module modBreeding {
                 getElem('pet' + i + '_0_update').innerHTML = "Hunger " + getHunger(i, 0) + "%" + "<br/>Happiness" + getHappiness(i, 0) + "%";
                 getElem('pet' + i + '_1_update').innerHTML = "Hunger " + getHunger(i, 1) + "%" + "<br/>Happiness" + getHappiness(i, 1) + "%";
 
-                if (nestPairs[i][0].params.pet_id !== undefined){
-                    getElem('pet' + i + '_0_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][0].params.pet_id].img.sheet].url + ")";
-                    getElem('pet' + i + '_0_petPic').style.backgroundPosition = -(pets[nestPairs[i][0].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][0].params.pet_id].img.y * 32) + "px";
-                }
-
-
-                if (nestPairs[i][1].params.pet_id !== undefined){
-                    getElem('pet' + i + '_1_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][1].params.pet_id].img.sheet].url + ")";
-                    getElem('pet' + i + '_1_petPic').style.backgroundPosition = -(pets[nestPairs[i][1].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][1].params.pet_id].img.y * 32) + "px";
-                }
-
-            }
+                updateImages(i);
+             }
         }
     }, 1000);
+
+
+    function updateImages(i) {
+        if (nestPairs[i][0].params.pet_id !== undefined) {
+            getElem('pet' + i + '_0_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][0].params.pet_id].img.sheet].url + ")";
+            getElem('pet' + i + '_0_petPic').style.backgroundPosition = -(pets[nestPairs[i][0].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][0].params.pet_id].img.y * 32) + "px";
+        }
+
+
+        if (nestPairs[i][1].params.pet_id !== undefined) {
+            getElem('pet' + i + '_1_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][1].params.pet_id].img.sheet].url + ")";
+            getElem('pet' + i + '_1_petPic').style.backgroundPosition = -(pets[nestPairs[i][1].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][1].params.pet_id].img.y * 32) + "px";
+        }
+    }
 
     var getHappiness = function (y, z) {
         return Breeding.get_pet_happiness(nestPairs[y][z], nestPairs[y][z]);

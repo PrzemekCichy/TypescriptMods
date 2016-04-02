@@ -31,6 +31,8 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Boss timers\bossTimers.ts" />
+    <TypeScriptCompile Include="notifications\Notifications.ts" />
     <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
   </ItemGroup>
   <ItemGroup>
