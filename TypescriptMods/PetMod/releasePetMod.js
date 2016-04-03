@@ -1,7 +1,8 @@
 var modBreeding;
 (function (modBreeding) {
-    modBreeding.audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
-    modBreeding.audio.volume = 0.2;
+    var audio;
+    audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
+    audio.volume = 0.2;
     (function () {
         //load css
         //create dom etc
@@ -43,7 +44,7 @@ var modBreeding;
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_0_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 0)'>Breed</button>\
-				   <button id='pet{{@index}}_0_feed' class='feed' onclick = 'modBreeding.feedPet({{@index}}, 0)'>Pet {{@index}}</button>\
+				   <button id='pet{{@index}}_0_feed' class='feed' >Nest {{@index}}</button>\
 				</div>\
 				<div id='pet{{@index}}_1' class='pet'>\
 				  <div id='pet{{@index}}_1_petPic' class='petPic' onclick='modBreeding.openNest({{@index}}, 1);'></div>\
@@ -54,7 +55,7 @@ var modBreeding;
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_1_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 1)'>Breed</button>\
-				   <button id='pet{{@index}}_1_feed' class='feed' onclick = 'modBreeding.feedPet({{@index}}, 1)'>Feed</button>\
+				   <button id='pet{{@index}}_1_feed' class='feed''>Nest {{@index}}</button>\
 				</div>\
 			</div>\
 		 {{/each}}\
@@ -111,8 +112,8 @@ var modBreeding;
         //Update hapiness & hunger bars
         for (var i in nestPairs) {
             if (modBreeding.getHunger(i, 0) !== undefined) {
-                if (wait = false && modBreeding.getHunger(i, 0) >= 80 && modBreeding.getHunger(i, 0) !== 100 || modBreeding.getHunger(i, 1) >= 80 && modBreeding.getHunger(i, 1) != 100) {
-                    modBreeding.audio.play();
+                if (wait = false && modBreeding.getHunger(i, 0) >= 75 && modBreeding.getHunger(i, 0) !== 100 || modBreeding.getHunger(i, 1) >= 75 && modBreeding.getHunger(i, 1) != 100) {
+                    audio.play();
                     wait = true;
                 }
                 else {

@@ -2,7 +2,7 @@
 
 module modBreeding {
 
-    export var audio;
+    var audio;
     audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
     audio.volume = 0.2;
  
@@ -50,7 +50,7 @@ module modBreeding {
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_0_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 0)'>Breed</button>\
-				   <button id='pet{{@index}}_0_feed' class='feed' onclick = 'modBreeding.feedPet({{@index}}, 0)'>Pet {{@index}}</button>\
+				   <button id='pet{{@index}}_0_feed' class='feed' >Nest {{@index}}</button>\
 				</div>\
 				<div id='pet{{@index}}_1' class='pet'>\
 				  <div id='pet{{@index}}_1_petPic' class='petPic' onclick='modBreeding.openNest({{@index}}, 1);'></div>\
@@ -61,7 +61,7 @@ module modBreeding {
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_1_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 1)'>Breed</button>\
-				   <button id='pet{{@index}}_1_feed' class='feed' onclick = 'modBreeding.feedPet({{@index}}, 1)'>Feed</button>\
+				   <button id='pet{{@index}}_1_feed' class='feed''>Nest {{@index}}</button>\
 				</div>\
 			</div>\
 		 {{/each}}\
@@ -125,7 +125,7 @@ module modBreeding {
         //Update hapiness & hunger bars
         for (var i in nestPairs) {
             if (getHunger(i, 0) !== undefined) {
-                if (wait = false && getHunger(i, 0) >= 80 && getHunger(i, 0) !== 100 || getHunger(i, 1) >= 80 && getHunger(i, 1) != 100 ) {
+                if (wait = false && getHunger(i, 0) >= 75 && getHunger(i, 0) !== 100 || getHunger(i, 1) >= 75 && getHunger(i, 1) != 100 ) {
                         audio.play();
                         wait = true;
                     } else {

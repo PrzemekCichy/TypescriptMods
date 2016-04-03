@@ -1,0 +1,68 @@
+﻿
+#timersHolder {
+    text-shadow: 4px 2px 6px #2B3336;
+    color: #F2F2F2;
+    width: 520px;
+    min-height: 900px;
+    max-height: 980px;
+    height: auto;
+    margin: auto;
+    background: #1d1f20;
+    border-style: solid;
+    border-color: #2B3336;
+    z-index: 11111111;
+    position: absolute;
+    overflow: auto;
+    top: 0;
+    right: 0;
+}
+.boss {
+    overflow: auto;
+    width:490px;
+    margin: auto;
+    margin-top: 2px;
+    margin-right: 4px;
+    margin-bottom: 1px;
+    background: #3d3d3d;
+    display:block;
+}
+.world {
+    background: #1d1f20;
+    text-align: center;
+    position: relative;
+    border: 1px solid #3d3d3d;
+    float : left;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    height:34px;
+    width: 60px;
+    vertical-align: middle;
+    margin-left: 2px;
+}
+.bossPic {
+    background: #3d3d3d;
+    border-right: 1px solid #3d3d3d;
+    height: 34px;
+    width: 34px;
+    position:relative;
+float: left;
+    margin-right: 38px;
+}
+.timersMenu {
+    width: 100%;
+    height: 16px;
+    background: #1d1f20;
+}
+.close {
+    color: #F2F2F2;
+    float: right;
+    position: static;
+    border: none;
+    background: #1d1f20;
+    height: 16px;
+    width: 15%;
+    font-size: 12px;
+}
+button:hover {
+    background: #3d3d3d;
+}

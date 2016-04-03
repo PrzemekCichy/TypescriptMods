@@ -24,6 +24,9 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Boss timers\templeate.html" />
+    <Content Include="Boss timers\timerCss.css" />
+    <Content Include="notifications\Notifications.js" />
     <Content Include="npmPlaceholder.txt" />
     <Content Include="PetMod\petMod.html" />
     <Content Include="PetMod\releasePetMod.js" />

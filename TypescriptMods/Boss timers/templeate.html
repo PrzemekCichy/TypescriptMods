@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset='utf-8' />
+</head>
+<body>
+    <div id='timersHolder'>
+        <div class='petMenu'>
+            <button class='close'>Close</button>
+            <button class='close'>Options</button>
+        </div>
+        <div id='timersContent' ng-app='timersApp' ng-controller='timersController'>
+            <div ng-repeat='boss in ::BossList'>
+                <div>
+                    <div class='image' ng-style='getBackgroundStyle(items[item.id].img.sheet, items[item.id].img.x, items[item.id].img.y);'></div>
+                    <div ng-repeat='world in :: boss'>{{world}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
