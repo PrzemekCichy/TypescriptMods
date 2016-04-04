@@ -6,11 +6,12 @@ module timersMod {
     var key = 121531415, channel = "FWB";
     var world = getWorld();
     export var Boss = {};
-    var bossID = "", enumBoss = {};
+    export var bossID = "", enumBoss = [];
     var date = new Date(), hours = (date.getUTCHours()), minutes = (date.getUTCMinutes()), seconds = (date.getUTCSeconds());
     var audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
     audio.volume = 0.2;
 
+    export var bossFoundId = [];
     export var emitEnabled = true;
 
     //Initialize DOM
@@ -19,6 +20,7 @@ module timersMod {
         //Create 2d boss aray and populate with temp data
         for (var i in npc_base) {
             if (npc_base[i].name.match(/BOSS/g)) {
+                bossFoundId.push(i);
                 bossID = npc_base[i].name;
                 enumBoss[npc_base[i].name] = found++;
                 Boss[bossID] = {};
@@ -70,7 +72,7 @@ module timersMod {
             {{#each Boss}}\
                 <div class='boss'>\
                     <div>\
-                        <div class='bossPic'></div>\
+                        <div class='bossPic' id='bossPic{{@key}}'></div>\
                          {{#each this}}\
                         <div class='world'>{{this}}</div>\
                         {{/each}}\
@@ -78,15 +80,18 @@ module timersMod {
                 </div>\
             {{/each}}\
 	");
+        
+    getElem("timersContent").innerHTML = boss_template({ Boss: Boss });
     })();
 
     //Select appropriate action based on socket messages
     function action(data) {
-        if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/Chicken/g)) {
+        if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/Boss/g)) {
             //UPDATE BOSS HOLDER
             updateBossTimer(data);
         } else if (data.action && data.action === "message" && data.data.message.lang === "FWB"/* && players[0].name !== data.data.message.user */) {
             console.log("Message to decrypt received");
+            console.log(data);
             onBossTimers(data.data.message.text);
         }
     }
@@ -172,8 +177,12 @@ module timersMod {
                         Boss[enumBoss[i]][y] -= 1000;
                 }
             }
+            updatePics();
+            getElem("timersContent").innerHTML = boss_template({ Boss: Boss });
         }, 1000);
+
     }
+    update();
     function test() {
         console.log(Boss);
         var data = Boss;
@@ -193,5 +202,25 @@ module timersMod {
 
     //test();
 
-    getElem("timersContent").innerHTML = boss_template({ Boss: Boss });
+    function updatePics(){
+        for (var i = 0; i < enumBoss.length; i++) {
+            try {
+                getElem('bossPic' + enumBoss[i]).style.background = "url(" + IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].url + ")";
+                getElem('bossPic' + enumBoss[i]).style.backgroundPosition = -(
+                    npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
+                ) + "px " + -(
+                    npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
+                ) + "px";
+
+                console.log(-(
+                    npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
+                ) + "px " + -(
+                    npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
+                ) + "px");
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
 }

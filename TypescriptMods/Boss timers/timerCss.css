@@ -42,11 +42,10 @@
 .bossPic {
     background: #3d3d3d;
     border-right: 1px solid #3d3d3d;
-    height: 34px;
-    width: 34px;
+    height: 40px;
+    width: 60px;
     position:relative;
 float: left;
-    margin-right: 38px;
 }
 .timersMenu {
     width: 100%;
