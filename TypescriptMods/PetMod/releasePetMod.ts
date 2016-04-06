@@ -16,6 +16,11 @@ module modBreeding {
         link.rel = "stylesheet";
         $("head").appendChild(link);
 
+        var pet = 1;
+        Handlebars.registerHelper("inc", function (value, options) {
+            return pet += 1;
+        });
+
         //Creates a holder in which breeding nests are housed.    
         var body = document.getElementsByTagName("body")[0];
         createElem("div", body, {
@@ -50,7 +55,7 @@ module modBreeding {
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_0_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 0)'>Breed</button>\
-				   <button id='pet{{@index}}_0_feed' class='feed' >Nest {{@index}}</button>\
+				   <button id='pet{{@index}}_0_feed' class='feed' >Pet {{inc}}</button>\
 				</div>\
 				<div id='pet{{@index}}_1' class='pet'>\
 				  <div id='pet{{@index}}_1_petPic' class='petPic' onclick='modBreeding.openNest({{@index}}, 1);'></div>\
@@ -61,7 +66,7 @@ module modBreeding {
 							<br/>Happiness</div>\
 					</div>\
 					<button id='pet{{@index}}_1_breed' class='breed' onclick = 'modBreeding.breed({{@index}}, 1)'>Breed</button>\
-				   <button id='pet{{@index}}_1_feed' class='feed''>Nest {{@index}}</button>\
+				   <button id='pet{{@index}}_1_feed' class='feed''>Pet {{inc}}</button>\
 				</div>\
 			</div>\
 		 {{/each}}\
