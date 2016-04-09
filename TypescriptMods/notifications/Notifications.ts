@@ -10,6 +10,7 @@ module notifications {
         inventoryNotifications;
         bossRespawn;
         autoEscape;
+        soundHP;
         escapeHP;
         //Empty constructor by default all true
         constructor(_sound = true,
@@ -18,6 +19,7 @@ module notifications {
             _inventoryNotifications = true,
             _bossRespawn = true,
             _autoEscape = true,
+            _soundHP = 70,
             _escapeHP = 40) {
             this.sound = _sound;
             this.notifications = _notifications
@@ -25,12 +27,13 @@ module notifications {
             this.inventoryNotifications = _inventoryNotifications;
             this.bossRespawn = _bossRespawn;
             this.autoEscape = _autoEscape;
+            this.soundHP = _soundHP;
             this.escapeHP = _escapeHP;
         }
     }
 
     //Modify this for according to personal preferences
-    export var enable = new Enable(true, true, true, true, true, true, 40);
+    export var enable = new Enable(true, true, true, true, true, true, 70, 40);
 
     //Socket
     (function () {
@@ -95,14 +98,13 @@ module notifications {
                 }
             }
             //While in fight, If below escape Hp player will run away from fight
-            if (enable.autoEscape && data.action === "hit") {
-                if (skills[0].health.current <= (enable.escapeHP)) {
+            if (data.action === "hit") {
+                if (enable.autoEscape &&
+                    skills[0].health.current <= (enable.escapeHP)) {
                     players[0].temp.busy && inAFight && 500 < timestamp() - lastRunAwayAttempt && (Socket.send("run_from_fight", {}),
-                        lastRunAwayAttempt = timestamp());
-
-                    if (enable.sound)
-                        audio.play();
-                };
+                        lastRunAwayAttempt = timestamp());                    
+                } else if (enable.sound && skills[0].health.current <= (enable.soundHP))
+                    audio.play();;
             }
 
             //egg

@@ -3,13 +3,14 @@ var notifications;
     //Enable for enabling.disabling different features
     var Enable = (function () {
         //Empty constructor by default all true
-        function Enable(_sound, _notifications, _logMessages, _inventoryNotifications, _bossRespawn, _autoEscape, _escapeHP) {
+        function Enable(_sound, _notifications, _logMessages, _inventoryNotifications, _bossRespawn, _autoEscape, _soundHP, _escapeHP) {
             if (_sound === void 0) { _sound = true; }
             if (_notifications === void 0) { _notifications = true; }
             if (_logMessages === void 0) { _logMessages = true; }
             if (_inventoryNotifications === void 0) { _inventoryNotifications = true; }
             if (_bossRespawn === void 0) { _bossRespawn = true; }
             if (_autoEscape === void 0) { _autoEscape = true; }
+            if (_soundHP === void 0) { _soundHP = 70; }
             if (_escapeHP === void 0) { _escapeHP = 40; }
             this.sound = _sound;
             this.notifications = _notifications;
@@ -17,13 +18,14 @@ var notifications;
             this.inventoryNotifications = _inventoryNotifications;
             this.bossRespawn = _bossRespawn;
             this.autoEscape = _autoEscape;
+            this.soundHP = _soundHP;
             this.escapeHP = _escapeHP;
         }
         return Enable;
     })();
     notifications.Enable = Enable;
     //Modify this for according to personal preferences
-    notifications.enable = new Enable(true, true, true, true, true, true, 40);
+    notifications.enable = new Enable(true, true, true, true, true, true, 70, 40);
     //Socket
     (function () {
         var socketAction = function () {
@@ -84,13 +86,14 @@ var notifications;
                 }
             }
             //While in fight, If below escape Hp player will run away from fight
-            if (notifications.enable.autoEscape && data.action === "hit") {
-                if (skills[0].health.current <= (notifications.enable.escapeHP)) {
+            if (data.action === "hit") {
+                if (notifications.enable.autoEscape &&
+                    skills[0].health.current <= (notifications.enable.escapeHP)) {
                     players[0].temp.busy && inAFight && 500 < timestamp() - lastRunAwayAttempt && (Socket.send("run_from_fight", {}),
                         lastRunAwayAttempt = timestamp());
-                    if (notifications.enable.sound)
-                        audio.play();
                 }
+                else if (notifications.enable.sound && skills[0].health.current <= (notifications.enable.soundHP))
+                    audio.play();
                 ;
             }
         }
