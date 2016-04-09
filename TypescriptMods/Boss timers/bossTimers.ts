@@ -1,4 +1,10 @@
-﻿declare var createElem, wrapper, getElem, boss_template, Handlebars, pet_nest, Breeding, pets, on_map, IMAGE_SHEET, players, $, angular, online_players;
+﻿//load angular
+        var fileref = document.createElement('script')
+        fileref.setAttribute("type", "text/javascript")
+        fileref.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js");   
+        document.getElementsByTagName("head")[0].appendChild(fileref)
+
+declare var createElem, wrapper, getElem, boss_template, Handlebars, pet_nest, Breeding, pets, on_map, IMAGE_SHEET, players, $, angular, online_players;
 
 declare var socket, switchWorldBugFix, objects_data, Socket, npc_base, ServerList;
 
@@ -68,9 +74,9 @@ module timersMod {
         var md = getElem("mods_link");
         getElem("settings").insertBefore(f, md);
 
-        boss_template = Handlebars.compile("\
-            {{#each Boss}}\
-                <div class='boss'>\
+        boss_template = "\
+            <div ng-repeat='boss in Bosses'>\
+                <div class='boss' >\
                     <div>\
                         <div class='bossPic' id='bossPic{{@key}}'></div>\
                          {{#each this}}\
@@ -78,10 +84,10 @@ module timersMod {
                         {{/each}}\
                     </div>\
                 </div>\
-            {{/each}}\
-	");
+            </div>\
+	";
         
-    getElem("timersContent").innerHTML = boss_template({ Boss: Boss });
+    getElem("timersContent").innerHTML = boss_template;
     })();
 
     //Select appropriate action based on socket messages
@@ -182,7 +188,8 @@ module timersMod {
         }, 1000);
 
     }
-    update();
+    //update();
+    updatePics();
     function test() {
         console.log(Boss);
         var data = Boss;
@@ -222,5 +229,21 @@ module timersMod {
             }
         }
     }
-
+    updatePics();
 }
+
+setTimeout(function () {
+    //do this after view has loaded :)
+    var RPGApp = angular.module('App', [])
+        .controller('BossTimerController', ["$scope", function ($scope, $routeParams) {
+            $scope.getBackgroundStyle = function (imagePath, x, y) {
+                var url = 'url(' + $scope.images[imagePath] + ')';
+                return {
+                    'background-image': url,
+                    'background-position': (x * -32 + 'px ' + y * -32 + 'px')
+                };
+            };
+        }]);
+    angular.bootstrap(document, ['App']);
+
+}, 2000);

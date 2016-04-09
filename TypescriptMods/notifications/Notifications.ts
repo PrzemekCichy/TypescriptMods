@@ -1,8 +1,40 @@
-﻿declare var socket, addChatText, Mods, objects_data, switchWorldBugFix, Inventory, createElem, players, Notification, timestamp, getElem, options_audio, COLOR;
+﻿declare var socket, addChatText, Mods, objects_data, switchWorldBugFix, Inventory, createElem, players, Notification, timestamp, getElem, options_audio, COLOR, skills, inAFight, lastRunAwayAttempt;
 
 module notifications {
+
+    //Enable for enabling.disabling different features
+    export class Enable {
+        sound;
+        notifications;
+        logMessages;
+        inventoryNotifications;
+        bossRespawn;
+        autoEscape;
+        escapeHP;
+        //Empty constructor by default all true
+        constructor(_sound = true,
+            _notifications = true,
+            _logMessages = true,
+            _inventoryNotifications = true,
+            _bossRespawn = true,
+            _autoEscape = true,
+            _escapeHP = 40) {
+            this.sound = _sound;
+            this.notifications = _notifications
+            this.logMessages = _logMessages;
+            this.inventoryNotifications = _inventoryNotifications;
+            this.bossRespawn = _bossRespawn;
+            this.autoEscape = _autoEscape;
+            this.escapeHP = _escapeHP;
+        }
+    }
+
+    //Modify this for according to personal preferences
+    export var enable = new Enable(true, true, true, true, true, true, 40);
+
     //Socket
     (function () {
+
         var socketAction = function () {
             socket.on("message", function (data) {
                 selectAction(data);
@@ -22,12 +54,14 @@ module notifications {
         var inventoryWait = false;
         setInterval(function () {
 
-            if (Inventory.is_full(players[0]) && inventoryWait === false) {
-                spawnNotification("Inventory Full", "http://hydra-media.cursecdn.com/evoland.gamepedia.com/thumb/9/99/Inventory1.png/100px-Inventory1.png", "InventoryFull");
-                inventoryWait = true;
-            } else if (Inventory.is_full(players[0]) === false) {
-                inventoryWait = false;
+            if (enable.inventoryNotifications) {
+                if (Inventory.is_full(players[0]) && inventoryWait === false) {
+                    spawnNotification("Inventory Full", "http://hydra-media.cursecdn.com/evoland.gamepedia.com/thumb/9/99/Inventory1.png/100px-Inventory1.png", "InventoryFull");
+                    inventoryWait = true;
+                } else if (Inventory.is_full(players[0]) === false) {
+                    inventoryWait = false;
 
+                }
             }
         }, 1000);
     })()
@@ -37,28 +71,42 @@ module notifications {
         if (typeof data === "object" && data.action) {
 
             //boss
-            if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/BOSS/g)) {
-                addChatText((objects_data[data.target_id].name + " spawns in " + Math.round(data.duration / 10 / 60) / 100 + " minutes"), false, COLOR.RED);
-            }
-
-            //chat
-            var date;
-            if (data.action == "message") {
-                date = new Date(timestamp());
-                if (data.data.type == "chat") {
-                    console.log("(" + date.toLocaleTimeString() + ") [" + data.data.message.lang + "] <" + data.data.message.user + ">:\t" + data.data.message.text + "\n");
-                } else if (data.data.type == "whisper") {
-                    console.log("(" + date.toLocaleTimeString() + ") <" + data.data.name + "> to <" + data.data.to + ">:" + data.data.message + " \n");
+            if (enable.bossRespawn) {
+                if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/BOSS/g)) {
+                    addChatText((objects_data[data.target_id].name + " spawns in " + Math.round(data.duration / 10 / 60) / 100 + " minutes"), false, COLOR.RED);
                 }
-            } else if (data.action === "join") {
-                date = new Date(timestamp());
-                console.log(data.name + " has joined World " + data.world + " at " + date.toLocaleTimeString());
-            } else if (data.action === "leave") {
-                date = new Date(timestamp());
-                console.log(data.name + " left at " + date.toLocaleTimeString());
+            }
+            //chat
+            if (enable.logMessages) {
+                var date;
+                if (data.action == "message") {
+                    date = new Date(timestamp());
+                    if (data.data.type == "chat") {
+                        console.log("(" + date.toLocaleTimeString() + ") [" + data.data.message.lang + "] <" + data.data.message.user + ">:\t" + data.data.message.text + "\n");
+                    } else if (data.data.type == "whisper") {
+                        console.log("(" + date.toLocaleTimeString() + ") <" + data.data.name + "> to <" + data.data.to + ">:" + data.data.message + " \n");
+                    }
+                } else if (data.action === "join") {
+                    date = new Date(timestamp());
+                    console.log(data.name + " has joined World " + data.world + " at " + date.toLocaleTimeString());
+                } else if (data.action === "leave") {
+                    date = new Date(timestamp());
+                    console.log(data.name + " left at " + date.toLocaleTimeString());
+                }
+            }
+            //While in fight, If below escape Hp player will run away from fight
+            if (enable.autoEscape && data.action === "hit") {
+                if (skills[0].health.current <= (enable.escapeHP)) {
+                    players[0].temp.busy && inAFight && 500 < timestamp() - lastRunAwayAttempt && (Socket.send("run_from_fight", {}),
+                        lastRunAwayAttempt = timestamp());
+
+                    if (enable.sound)
+                        audio.play();
+                };
             }
 
             //egg
+            /*
             if (data.action == "message" && data.data.type !== "chat") {
                 var _message = data.data.message;
 
@@ -66,10 +114,9 @@ module notifications {
                     spawnNotification(data.data.message, "http://images.all-free-download.com/images/graphiclarge/easter_eggs_clip_art_11010.jpg", "Scavenger Hunt!");
                 }
             }
+            */
         }
     }
-
-
 
     //Notifications
     Notification.requestPermission();
@@ -79,20 +126,22 @@ module notifications {
             icon: Icon
 
         }
-        if (Mods.Miscmd.invSoundEnabled) {
+        if (enable.sound && Mods.Miscmd.invSoundEnabled) {
             audio.play();
         }
-        var n = new Notification(Title, options);
-        n.onclick = function () {
-            window.focus();
-        };
+        if (enable.notifications) {
+            var n = new Notification(Title, options);
+            n.onclick = function () {
+                window.focus();
+            };
+        }
     }
 
     //audio
     var audio;
     (function () {
         audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
-        audio.volume = 0.2;
+        audio.volume = 0.4;
         //Save user option to LocalStorage
         localStorage["invsound"] = localStorage["invsound"] || JSON.stringify(1);
         Mods.Miscmd.invSoundEnabled = JSON.parse(localStorage["invsound"]);
