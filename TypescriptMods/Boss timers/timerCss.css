@@ -2,7 +2,7 @@
 #timersHolder {
     text-shadow: 4px 2px 6px #2B3336;
     color: #F2F2F2;
-    width: 520px;
+    width: 550px;
     min-height: 900px;
     max-height: 980px;
     height: auto;
@@ -17,14 +17,16 @@
     right: 0;
 }
 .boss {
+    position: relative;
     overflow: auto;
-    width:490px;
+    width:530px;
     margin: auto;
     margin-top: 2px;
     margin-right: 4px;
     margin-bottom: 1px;
     background: #3d3d3d;
     display:block;
+        height: 50px;
 }
 .world {
     background: #1d1f20;
@@ -38,6 +40,10 @@
     width: 60px;
     vertical-align: middle;
     margin-left: 2px;
+        display: flex;
+    /* flex-direction: column;*/
+    align-items: center; 
+    /* justify-content: center;*/
 }
 .bossPic {
     background: #3d3d3d;

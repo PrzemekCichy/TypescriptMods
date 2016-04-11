@@ -1,8 +1,10 @@
-﻿//load angular
-        var fileref = document.createElement('script')
-        fileref.setAttribute("type", "text/javascript")
-        fileref.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js");   
-        document.getElementsByTagName("head")[0].appendChild(fileref)
+﻿
+
+//load angular
+var fileref = document.createElement('script')
+fileref.setAttribute("type", "text/javascript")
+fileref.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js");
+document.getElementsByTagName("head")[0].appendChild(fileref)
 
 declare var createElem, wrapper, getElem, boss_template, Handlebars, pet_nest, Breeding, pets, on_map, IMAGE_SHEET, players, $, angular, online_players;
 
@@ -10,10 +12,9 @@ declare var socket, switchWorldBugFix, objects_data, Socket, npc_base, ServerLis
 
 module timersMod {
     var key = 121531415, channel = "FWB";
-    var world = getWorld();
-    export var Boss = {};
-    export var bossID = "", enumBoss = [];
-    var date = new Date(), hours = (date.getUTCHours()), minutes = (date.getUTCMinutes()), seconds = (date.getUTCSeconds());
+    export var world = getWorld();
+    export var Boss = {}, enumBoss = [], BossToNumber = {};
+    var bossID = "";
     var audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
     audio.volume = 0.2;
 
@@ -28,7 +29,7 @@ module timersMod {
             if (npc_base[i].name.match(/BOSS/g)) {
                 bossFoundId.push(i);
                 bossID = npc_base[i].name;
-                enumBoss[npc_base[i].name] = found++;
+                BossToNumber[npc_base[i].name] = found++;
                 Boss[bossID] = {};
                 for (var x in ServerList.downloaded) {
                     Boss[bossID][x] = "?";
@@ -56,7 +57,7 @@ module timersMod {
                     <button class='close'>Close </button>\
                     <button class='close' > Options </button>\
                 </div>\
-            <div id='timersContent'>\
+            <div id='timersContent'  ng-controller='BossTimerController'>\
             </div>\
         </div>\
         "
@@ -73,29 +74,35 @@ module timersMod {
         f.innerHTML = "Boss Timers";
         var md = getElem("mods_link");
         getElem("settings").insertBefore(f, md);
-
         boss_template = "\
-            <div ng-repeat='boss in Bosses'>\
-                <div class='boss' >\
-                    <div>\
-                        <div class='bossPic' id='bossPic{{@key}}'></div>\
-                         {{#each this}}\
-                        <div class='world'>{{this}}</div>\
-                        {{/each}}\
+            <div ng-repeat='(key,val) in Bosses'>\
+                <div timer-draggable class='boss' >\
+                    <div class='bossPic' id='bossPic{{$index}}' ng-style='getBackgroundStyle($index);'>{{key}}</div>\
+                    <div ng-repeat='world in val'>\
+                        <div class='world'>{{world | timer}}</div>\
                     </div>\
                 </div>\
             </div>\
 	";
-        
-    getElem("timersContent").innerHTML = boss_template;
+
+        getElem("timersContent").innerHTML = boss_template;
     })();
 
     //Select appropriate action based on socket messages
     function action(data) {
-        if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/Boss/g)) {
+        if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/BOSS/g)) {
             //UPDATE BOSS HOLDER
+            console.log(data);
+            world = getWorld();
             updateBossTimer(data);
-        } else if (data.action && data.action === "message" && data.data.message.lang === "FWB"/* && players[0].name !== data.data.message.user */) {
+
+        } else if (data.action == "monster_visible" && objects_data[data.target_id].name.match(/BOSS/g)) {
+            //UPDATE BOSS HOLDER
+            console.log(data);
+            world = getWorld();
+            updateBossTimer(data);
+
+        } else if (data.action && data.action === "message" && data.data.message.lang === "FWB" && players[0].name !== data.data.message.user ) {
             console.log("Message to decrypt received");
             console.log(data);
             onBossTimers(data.data.message.text);
@@ -105,8 +112,8 @@ module timersMod {
     //Sets up Boss message listeners
     function initializeSocket() {
         var socketAction = function () {
-            socket.on("message", function (data) {
-               action(data);
+            socket.on("message", function (a) {
+                action(a);
             });//socket end
         }
         socketAction();
@@ -115,7 +122,6 @@ module timersMod {
         switchWorldBugFix = function () {
             switchWorldBugFixOld();
             socketAction();
-            world = getWorld()
         }
     };
     initializeSocket();
@@ -123,7 +129,7 @@ module timersMod {
     //Get boss data and Send
     function emitBossTimers(bossToUpdate, BossToUpdateWorld) {
         var message = bossToUpdate + "@" + BossToUpdateWorld + "@" + JSON.stringify(
-            Boss[ enumBoss[bossToUpdate] ][ BossToUpdateWorld] );
+            Boss[enumBoss[bossToUpdate]][BossToUpdateWorld]);
         //sends encrypted chat line with boss timers
         sendMessage(message);
     };
@@ -131,7 +137,7 @@ module timersMod {
     //Decrypt and load data
     function onBossTimers(message) {
         var splitMessage = recode(message).split("@");
-        Boss[ enumBoss[splitMessage[0]] ][ splitMessage[1] ] = splitMessage[2];
+        Boss[enumBoss[splitMessage[0]]][splitMessage[1]] = parseInt(splitMessage[2]);
         console.log(Boss[enumBoss[splitMessage[0]]][splitMessage[1]]);
     }
 
@@ -141,11 +147,13 @@ module timersMod {
         for (i = 0; i < message.length; i += 1) {
             out += String.fromCharCode(message.charCodeAt(i) ^ key);
         }
+        console.log(out);
         return out;
     }
 
     //Encrypt and send message to chat
     function sendMessage(message) {
+        console.log("sent message" + message);
         Socket.send('message', {
             data: recode(message),
             lang: channel
@@ -154,25 +162,34 @@ module timersMod {
 
 
     function updateBossTimer(data) {
-        //Update boss array for specific world
         //Decide if message should be emmited
-        if (Boss[objects_data[data.target_id].name][world] === NaN) {
-            emitBossTimers(enumBoss[objects_data[data.target_id].name], 0);
+        if (emitEnabled && (typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0)) {
+            if (typeof data.duration == "undefined")
+                data.duration = -10;
+            Boss[objects_data[data.target_id].name][world] = parseInt(data.duration);
+            emitBossTimers(BossToNumber[objects_data[data.target_id].name], world);
+            console.log("Emmiting");
+        } else if (true){
 
+        } else {
+            //Update boss array for specific world
+            Boss[objects_data[data.target_id].name][world] = parseInt(data.duration);
+            console.log(data);
         }
-        Boss[objects_data[data.target_id].name][world] = data.duration;
-        console.log(data);
     }
 
 
     //Find players current world
     function getWorld() {
-        return online_players[players[0].name] - 1;
+        if (online_players[players[0].name] !== "undefined")
+            return online_players[players[0].name] - 1;
+        else
+            setTimeout(function () { return online_players[players[0].name] - 1; }, 500);
     }
 
     //RerenderData
     var wait = false;
-    var update = function () {
+    /*var update = function () {
 
         var a = setInterval(function () {
             //Keep track of timers
@@ -183,13 +200,13 @@ module timersMod {
                         Boss[enumBoss[i]][y] -= 1000;
                 }
             }
-            updatePics();
-            getElem("timersContent").innerHTML = boss_template({ Boss: Boss });
+
         }, 1000);
 
     }
+    */
     //update();
-    updatePics();
+    //update();
     function test() {
         console.log(Boss);
         var data = Boss;
@@ -204,46 +221,124 @@ module timersMod {
         onBossTimers(recode(message));
         console.log(Boss);
         emitBossTimers(0, 0);
-        
     }
 
     //test();
+    /*
+    export function updatePics() {
+        try {
+            getElem('bossPic' + i).style.background = "url(" + IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].url + ")";
+            getElem('bossPic' + i).style.backgroundPosition = -(
+                npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
+            ) + "px " + -(
+                npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
+            ) + "px";
 
-    function updatePics(){
-        for (var i = 0; i < enumBoss.length; i++) {
-            try {
-                getElem('bossPic' + enumBoss[i]).style.background = "url(" + IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].url + ")";
-                getElem('bossPic' + enumBoss[i]).style.backgroundPosition = -(
-                    npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
-                ) + "px " + -(
-                    npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
-                ) + "px";
-
-                console.log(-(
-                    npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
-                ) + "px " + -(
-                    npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
-                ) + "px");
-            } catch (e) {
-                console.log(e);
-            }
+            console.log(-(
+                npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
+            ) + "px " + -(
+                npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
+            ) + "px");
+        } catch (e) {
+            console.log(e);
         }
     }
-    updatePics();
-}
+    */
+    var RPGApp;
+    setTimeout(function () {
+        //do this after view has loaded :)
+        RPGApp = angular.module('App', [])
+            .controller('BossTimerController', ["$scope", function ($scope, $routeParams) {
+                $scope.Bosses = Boss;
+                //$scope.Bosses["[BOSS] Acid Dragon Lord"][0] = 0;
+                //$scope.Bosses["[BOSS] Acid Dragon Lord"][1] = 0;
+                /*
+                $scope.getBackgroundStyle = function (i) {
+                    try {
+                        var url = 'url(' + IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].url + ')';
+                        //console.log("Pics");
+                        return {
+                            'background-image': url,
+                            'background-position': -(
+                                npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
+                            ) + "px " + -(
+                                npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
+                            ) + "px"
 
-setTimeout(function () {
-    //do this after view has loaded :)
-    var RPGApp = angular.module('App', [])
-        .controller('BossTimerController', ["$scope", function ($scope, $routeParams) {
-            $scope.getBackgroundStyle = function (imagePath, x, y) {
-                var url = 'url(' + $scope.images[imagePath] + ')';
-                return {
-                    'background-image': url,
-                    'background-position': (x * -32 + 'px ' + y * -32 + 'px')
+                        };
+                    } catch (e) {
+                        //console.log(e);
+                    }
                 };
+                */
+                //setInterval(() => $scope.Bosses["[BOSS] Acid Dragon Lord"][0] = new Date().toUTCString(), 500);
+
+                var update = function () {
+                    var a = setInterval(function () {
+                        //Keep track of timers
+                        //Decrease timer values
+                        for (var i in enumBoss) {
+                            for (var y in Boss[enumBoss[i]]) {
+                                if (typeof Boss[enumBoss[i]][y] === "number")
+                                    Boss[enumBoss[i]][y] -= 1000;
+                            }
+                        }
+                        $scope.$apply();
+                        //console.log($scope.Bosses);
+                    }, 1000);
+                }
+                update();
+            }])
+
+            .filter('timer', function () {
+                return function (input) {
+                    if (typeof input === "number") {   
+                        var minutes = Math.floor(input / 60000);
+                        var seconds: any = ((input % 60000) / 1000).toFixed(0);                                           
+                        if (input > 0) {
+                            return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+                        }
+                        else {
+                            return "Up" + -minutes + ":" + (-seconds < 10 ? '0' : '') + -seconds;
+                        }
+                    }
+                    return input;
+                };
+            })
+
+            .directive('timerDraggable', ['$document', function ($document) {
+            //Taken from https://docs.angularjs.org/guide/directive
+            return {
+                link: function (scope, element, attr) {
+                    var startX = 0, startY = 0, x = 0, y = 0;
+
+                    element.on('mousedown', function (event) {
+                        // Prevent default dragging of selected content
+                        event.preventDefault();
+                        startX = event.pageX - x;
+                        startY = event.pageY - y;
+                        $document.on('mousemove', mousemove);
+                        $document.on('mouseup', mouseup);
+                    });
+
+                    function mousemove(event) {
+                        y = event.pageY - startY;
+                        x = event.pageX - startX;
+                        element.css({
+                            top: y + 'px',
+                            left: x + 'px'
+                        });
+                    }
+
+                    function mouseup() {
+                        $document.off('mousemove', mousemove);
+                        $document.off('mouseup', mouseup);
+                    }
+                }
             };
         }]);
-    angular.bootstrap(document, ['App']);
+        //updatePics();
+        angular.bootstrap(document, ['App']);
+    }, 1000);
+}
 
-}, 2000);
