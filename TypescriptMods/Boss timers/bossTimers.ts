@@ -88,7 +88,9 @@ module timersMod {
         getElem("timersContent").innerHTML = boss_template;
     })();
 
-    //Select appropriate action based on socket messages
+
+    // PreCond : data send is valid
+    // PostCond: Selects actuon to carry out based on data properties
     function action(data) {
         if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/BOSS/g)) {
             //UPDATE BOSS HOLDER
@@ -110,6 +112,8 @@ module timersMod {
     }
 
     //Sets up Boss message listeners
+    // PreCond : table is not full
+    // PostCond: Pass data to action()
     function initializeSocket() {
         var socketAction = function () {
             socket.on("message", function (a) {
@@ -127,31 +131,36 @@ module timersMod {
     initializeSocket();
 
     //Get boss data and Send
-    function emitBossTimers(bossToUpdate, BossToUpdateWorld) {
+    // PreCond : BossToUpdate && BossToUpdateWorld are valid numbers
+    // PostCond: Constructs message to send and calls SendMessage()
+    function emitBossTimers(bossToUpdate:number, BossToUpdateWorld:number) {
         var message = bossToUpdate + "@" + BossToUpdateWorld + "@" + JSON.stringify(
             Boss[enumBoss[bossToUpdate]][BossToUpdateWorld]);
         //sends encrypted chat line with boss timers
         sendMessage(message);
     };
 
-    //Decrypt and load data
+    // PreCond: message is a valid string in formaat 1@1@201010
+    // PostCond: Updates Boss timer
     function onBossTimers(message) {
         var splitMessage = recode(message).split("@");
         Boss[enumBoss[splitMessage[0]]][splitMessage[1]] = parseInt(splitMessage[2]);
-        console.log(Boss[enumBoss[splitMessage[0]]][splitMessage[1]]);
+        //console.log(Boss[enumBoss[splitMessage[0]]][splitMessage[1]]);
     }
 
-    //encrypt/decrypt message char
+    // PostCond: Returns recoded message encrypted/decrypted
+    //Look at more advanced encryption?
     function recode(message) {
         var i, out = '';
         for (i = 0; i < message.length; i += 1) {
             out += String.fromCharCode(message.charCodeAt(i) ^ key);
         }
-        console.log(out);
+        //console.log(out);
         return out;
     }
-
-    //Encrypt and send message to chat
+    
+    // PreCond: message must not be already encrypted
+    // PostCond: Sends encrypted message to server at specified channel
     function sendMessage(message) {
         console.log("sent message" + message);
         Socket.send('message', {
@@ -160,53 +169,36 @@ module timersMod {
         });
     }
 
-
+    // PostCond: Sends encrypted message to server at specified channel
     function updateBossTimer(data) {
-        //Decide if message should be emmited
-        if (emitEnabled && (typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0)) {
-            if (typeof data.duration == "undefined")
-                data.duration = -10;
-            Boss[objects_data[data.target_id].name][world] = parseInt(data.duration);
-            emitBossTimers(BossToNumber[objects_data[data.target_id].name], world);
-            console.log("Emmiting");
-        } else if (true){
+                    // PreCond: Boss is alive
 
-        } else {
-            //Update boss array for specific world
+        if (typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0) {
+            // PreCond: Boss is alive
+            // PostCond: Sets data.duration to -10, indicating boss is alive
+            if (typeof data.duration == "undefined") {
+                data.duration = -10;
+            }
+            //Update Boss info and Emmit data.duration. -ve is Alive, +ve is Dead
             Boss[objects_data[data.target_id].name][world] = parseInt(data.duration);
-            console.log(data);
-        }
+
+            if (emitEnabled) {
+                emitBossTimers(BossToNumber[objects_data[data.target_id].name], world);
+                //console.log("Emmiting");
+            }
+        } 
     }
 
 
     //Find players current world
+    //Post Cond: Returns 0-6 indicating current world, -1 means world is undefined.
     function getWorld() {
         if (online_players[players[0].name] !== "undefined")
             return online_players[players[0].name] - 1;
         else
-            setTimeout(function () { return online_players[players[0].name] - 1; }, 500);
+            return -1;
     }
 
-    //RerenderData
-    var wait = false;
-    /*var update = function () {
-
-        var a = setInterval(function () {
-            //Keep track of timers
-            //Decrease timer values
-            for (var i in enumBoss) {
-                for (var y in Boss[enumBoss[i]]) {
-                    if (typeof Boss[enumBoss[i]][y] === "number")
-                        Boss[enumBoss[i]][y] -= 1000;
-                }
-            }
-
-        }, 1000);
-
-    }
-    */
-    //update();
-    //update();
     function test() {
         console.log(Boss);
         var data = Boss;
@@ -223,27 +215,6 @@ module timersMod {
         emitBossTimers(0, 0);
     }
 
-    //test();
-    /*
-    export function updatePics() {
-        try {
-            getElem('bossPic' + i).style.background = "url(" + IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].url + ")";
-            getElem('bossPic' + i).style.backgroundPosition = -(
-                npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
-            ) + "px " + -(
-                npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
-            ) + "px";
-
-            console.log(-(
-                npc_base[bossFoundId[i]].img.x * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_height
-            ) + "px " + -(
-                npc_base[bossFoundId[i]].img.y * IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].tile_width
-            ) + "px");
-        } catch (e) {
-            console.log(e);
-        }
-    }
-    */
     var RPGApp;
     setTimeout(function () {
         //do this after view has loaded :)
@@ -252,7 +223,9 @@ module timersMod {
                 $scope.Bosses = Boss;
                 //$scope.Bosses["[BOSS] Acid Dragon Lord"][0] = 0;
                 //$scope.Bosses["[BOSS] Acid Dragon Lord"][1] = 0;
-                /*
+                
+
+                //Post Cond: Updates View with Boss pictures
                 $scope.getBackgroundStyle = function (i) {
                     try {
                         var url = 'url(' + IMAGE_SHEET[npc_base[bossFoundId[i]].img.sheet].url + ')';
@@ -270,7 +243,7 @@ module timersMod {
                         //console.log(e);
                     }
                 };
-                */
+                
                 //setInterval(() => $scope.Bosses["[BOSS] Acid Dragon Lord"][0] = new Date().toUTCString(), 500);
 
                 var update = function () {
