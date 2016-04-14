@@ -95,19 +95,17 @@ module timersMod {
         if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/BOSS/g)) {
             //UPDATE BOSS HOLDER
             console.log(data);
-            world = getWorld();
             updateBossTimer(data);
 
         } else if (data.action == "monster_visible" && objects_data[data.target_id].name.match(/BOSS/g)) {
             //UPDATE BOSS HOLDER
             console.log(data);
-            world = getWorld();
             updateBossTimer(data);
 
         } else if (data.action && data.action === "message" && data.data.message.lang === "FWB" && players[0].name !== data.data.message.user ) {
             console.log("Message to decrypt received");
             console.log(data);
-            onBossTimers(data.data.message.text);
+            onBossTimers(data.data.message.text, data.data.message.user);
         }
     }
 
@@ -141,9 +139,13 @@ module timersMod {
     };
 
     // PreCond: message is a valid string in formaat 1@1@201010
+    //Or is join message
     // PostCond: Updates Boss timer
-    function onBossTimers(message) {
+    function onBossTimers(message, user) {
         var splitMessage = recode(message).split("@");
+        if (splitMessage.length < 2) {
+            onJoin(user);
+        }
         Boss[enumBoss[splitMessage[0]]][splitMessage[1]] = parseInt(splitMessage[2]);
         //console.log(Boss[enumBoss[splitMessage[0]]][splitMessage[1]]);
     }
@@ -171,9 +173,10 @@ module timersMod {
 
     // PostCond: Sends encrypted message to server at specified channel
     function updateBossTimer(data) {
-                    // PreCond: Boss is alive
-
-        if (typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0) {
+                    
+        world = getWorld();
+        // PreCond: Boss is alive
+        if ( world != -1 && typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0) {
             // PreCond: Boss is alive
             // PostCond: Sets data.duration to -10, indicating boss is alive
             if (typeof data.duration == "undefined") {
@@ -197,6 +200,19 @@ module timersMod {
             return online_players[players[0].name] - 1;
         else
             return -1;
+    }
+
+    export var playersList = [];
+    //Post Cond: Emmits message notifying other users
+    function emmitJoin() {
+        sendMessage("#");
+    }
+    emmitJoin();
+
+    //Precond: data object contains username
+    //Post Cond: Adds new player to list
+    function onJoin(data) {
+        playersList.push(data.data.message.user);
     }
 
     function test() {
@@ -312,6 +328,6 @@ module timersMod {
         }]);
         //updatePics();
         angular.bootstrap(document, ['App']);
-    }, 1000);
+    }, 500);
 }
 
