@@ -88,9 +88,11 @@ var notifications;
             //While in fight, If below escape Hp player will run away from fight
             if (data.action === "hit") {
                 if (notifications.enable.autoEscape &&
-                    skills[0].health.current <= (notifications.enable.escapeHP)) {
-                    players[0].temp.busy && inAFight && 500 < timestamp() - lastRunAwayAttempt && (Socket.send("run_from_fight", {}),
-                        lastRunAwayAttempt = timestamp());
+                    skills[0].health.current <= notifications.enable.escapeHP) {
+                    if (players[0].temp.busy && inAFight && 500 < timestamp() - lastRunAwayAttempt) {
+                        Socket.send("run_from_fight", {});
+                        lastRunAwayAttempt = timestamp();
+                    }
                 }
                 else if (notifications.enable.sound && skills[0].health.current <= (notifications.enable.soundHP))
                     audio.play();
