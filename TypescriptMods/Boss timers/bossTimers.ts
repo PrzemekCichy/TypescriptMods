@@ -231,7 +231,7 @@ module timersMod {
         var c = recode(b);
         console.log(c);
         var message = 0 + "@" + 0 + "@" + 235988;
-        onBossTimers(recode(message));
+        // onBossTimers(recode(message));
         console.log(Boss);
         emitBossTimers(0, 0);
     }
