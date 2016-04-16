@@ -84,16 +84,16 @@ var timersMod;
     function action(data) {
         if (data.action == "monster_invisible" && objects_data[data.target_id].name.match(/BOSS/g)) {
             //UPDATE BOSS HOLDER
-            console.log(data);
+            //console.log(data);
             updateBossTimer(data);
         }
         else if (data.action == "monster_visible" && objects_data[data.target_id].name.match(/BOSS/g)) {
             //UPDATE BOSS HOLDER
-            console.log(data);
+            //console.log(data);
             updateBossTimer(data);
         }
         else if (data.action && data.action === "message" && data.data.message.lang === "FWB" && players[0].name !== data.data.message.user) {
-            console.log("Message to decrypt received");
+            //console.log("Message to decrypt received");
             console.log(data);
             onBossTimers(data.data.message.text, data.data.message.user);
         }
@@ -246,50 +246,50 @@ var timersMod;
                 update();
             }])
             .filter('timer', function () {
-            return function (input) {
-                if (typeof input === "number") {
-                    var minutes = Math.floor(input / 60000);
-                    var seconds = ((input % 60000) / 1000).toFixed(0);
-                    if (input > 0) {
-                        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-                    }
-                    else {
-                        return "Up" + -minutes + ":" + (-seconds < 10 ? '0' : '') + -seconds;
-                    }
-                }
-                return input;
-            };
-        })
-            .directive('timerDraggable', ['$document', function ($document) {
-                //Taken from https://docs.angularjs.org/guide/directive
-                return {
-                    link: function (scope, element, attr) {
-                        var startX = 0, startY = 0, x = 0, y = 0;
-                        element.on('mousedown', function (event) {
-                            // Prevent default dragging of selected content
-                            event.preventDefault();
-                            startX = event.pageX - x;
-                            startY = event.pageY - y;
-                            $document.on('mousemove', mousemove);
-                            $document.on('mouseup', mouseup);
-                        });
-                        function mousemove(event) {
-                            y = event.pageY - startY;
-                            x = event.pageX - startX;
-                            element.css({
-                                top: y + 'px',
-                                left: x + 'px'
-                            });
+                return function (input) {
+                    if (typeof input === "number") {
+                        var minutes = Math.floor(input / 60000);
+                        var seconds = ((input % 60000) / 1000).toFixed(0);
+                        if (input > 0) {
+                            return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
                         }
-                        function mouseup() {
-                            $document.off('mousemove', mousemove);
-                            $document.off('mouseup', mouseup);
+                        else {
+                            return "Up" + -minutes + ":" + (-seconds < 10 ? '0' : '') + -seconds;
                         }
                     }
+                    return input;
                 };
-            }]);
+            })
+    .directive('timerDraggable', ['$document', function ($document) {
+        //Taken from https://docs.angularjs.org/guide/directive
+        return {
+            link: function (scope, element, attr) {
+                var startX = 0, startY = 0, x = 0, y = 0;
+                element.on('mousedown', function (event) {
+                    // Prevent default dragging of selected content
+                    event.preventDefault();
+                    startX = event.pageX - x;
+                    startY = event.pageY - y;
+                    $document.on('mousemove', mousemove);
+                    $document.on('mouseup', mouseup);
+                });
+                function mousemove(event) {
+                    y = event.pageY - startY;
+                    x = event.pageX - startX;
+                    element.css({
+                        top: y + 'px',
+                        left: x + 'px'
+                    });
+                }
+                function mouseup() {
+                    $document.off('mousemove', mousemove);
+                    $document.off('mouseup', mouseup);
+                }
+            }
+        };
+    }]);
         //updatePics();
         angular.bootstrap(document, ['App']);
-    }, 500);
+    }, 1500);
 })(timersMod || (timersMod = {}));
 //# sourceMappingURL=bossTimers.js.map
