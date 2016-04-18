@@ -41,8 +41,8 @@ module timersMod {
         //bossFoundId.sort();
 
         enumBoss = Object.keys(Boss);
-        enumBoss.sort();
-       // console.log(enumBoss);
+        //enumBoss.sort();
+        // console.log(enumBoss);
         //load css
         //create dom etc
         //Loads external CSS file. This code will be removed if CSS will be added to mods css file.
@@ -107,7 +107,7 @@ module timersMod {
             console.log(data);
             updateBossTimer(data);
 
-        } else if (data.action && data.action === "message" && data.data.message.lang === "FWB" && players[0].name !== data.data.message.user ) {
+        } else if (data.action && data.action === "message" && data.data.message.lang === "FWB" && players[0].name !== data.data.message.user) {
             console.log("Message to decrypt received");
             console.log(data);
             onBossTimers(data.data.message.text, data.data.message.user);
@@ -136,7 +136,7 @@ module timersMod {
     //Get boss data and Send
     // PreCond : BossToUpdate && BossToUpdateWorld are valid numbers
     // PostCond: Constructs message to send and calls SendMessage()
-    function emitBossTimers(bossToUpdate:number, BossToUpdateWorld:number) {
+    function emitBossTimers(bossToUpdate: number, BossToUpdateWorld: number) {
         var message = bossToUpdate + "@" + BossToUpdateWorld + "@" + JSON.stringify(
             Boss[enumBoss[bossToUpdate]][BossToUpdateWorld]);
         //sends encrypted chat line with boss timers
@@ -150,8 +150,9 @@ module timersMod {
         var splitMessage = recode(message).split("@");
         if (splitMessage.length < 2) {
             onJoin(user);
+        } else {
+            Boss[enumBoss[splitMessage[0]]][splitMessage[1]] = parseInt(splitMessage[2]);
         }
-        Boss[enumBoss[splitMessage[0]]][splitMessage[1]] = parseInt(splitMessage[2]);
         //console.log(Boss[enumBoss[splitMessage[0]]][splitMessage[1]]);
     }
 
@@ -178,14 +179,14 @@ module timersMod {
 
     // PostCond: Sends encrypted message to server at specified channel
     function updateBossTimer(data) {
-                    
+
         world = getWorld();
         // PreCond: Boss is alive
-        if ( world != -1 && typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0) {
+        if (world != -1 && typeof Boss[objects_data[data.target_id].name][world] !== "number" || data.duration && Boss[objects_data[data.target_id].name][world] < 0) {
             // PreCond: Boss is alive
             // PostCond: Sets data.duration to -10, indicating boss is alive
             if (typeof data.duration == "undefined") {
-                data.duration = -10;
+                data.duration = -100;
             }
             //Update Boss info and Emmit data.duration. -ve is Alive, +ve is Dead
             Boss[objects_data[data.target_id].name][world] = parseInt(data.duration);
@@ -194,7 +195,7 @@ module timersMod {
                 emitBossTimers(BossToNumber[objects_data[data.target_id].name], world);
                 //console.log("Emmiting");
             }
-        } 
+        }
     }
 
 
@@ -217,7 +218,7 @@ module timersMod {
     //Precond: data object contains username
     //Post Cond: Adds new player to list
     function onJoin(data) {
-        playersList.push(data.data.message.user);
+        playersList.push(data);
     }
 
     function test() {
@@ -287,9 +288,9 @@ module timersMod {
 
             .filter('timer', function () {
                 return function (input) {
-                    if (typeof input === "number") {   
+                    if (typeof input === "number") {
                         var minutes = Math.floor(input / 60000);
-                        var seconds: any = ((input % 60000) / 1000).toFixed(0);                                           
+                        var seconds: any = ((input % 60000) / 1000).toFixed(0);
                         if (input > 0) {
                             return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
                         }
@@ -300,38 +301,39 @@ module timersMod {
                     return input;
                 };
             })
-
             .directive('timerDraggable', ['$document', function ($document) {
-            //Taken from https://docs.angularjs.org/guide/directive
-            return {
-                link: function (scope, element, attr) {
-                    var startX = 0, startY = 0, x = 0, y = 0;
+                //Taken from https://docs.angularjs.org/guide/directive
+                return {
+                    link: function (scope, element, attr) {
+                        //Added grid attribute
+                        var startX = 0, startY = 0, x = 0, y = 0, gridSizeY = 50, gridSizeX = 50;
+                        element.on('mousedown', function (event) {
+                            // Prevent default dragging of selected content
+                            event.preventDefault();
+                            startX = event.pageX - x;
+                            startY = event.pageY - y;
 
-                    element.on('mousedown', function (event) {
-                        // Prevent default dragging of selected content
-                        event.preventDefault();
-                        startX = event.pageX - x;
-                        startY = event.pageY - y;
-                        $document.on('mousemove', mousemove);
-                        $document.on('mouseup', mouseup);
-                    });
-
-                    function mousemove(event) {
-                        y = event.pageY - startY;
-                        x = event.pageX - startX;
-                        element.css({
-                            top: y + 'px',
-                            left: x + 'px'
+                            $document.on('mousemove', mousemove);
+                            $document.on('mouseup', mouseup);
                         });
+                        function mousemove(event) {
+                            y = event.pageY - startY;
+                            x = event.pageX - startX;
+                            //Modulus snaps to grid
+                            y = y - (y % gridSizeY);
+                            x = x - (x % gridSizeX);
+                            element.css({
+                                top: y + 'px',
+                                left: x + 'px'
+                            });
+                        }
+                        function mouseup() {
+                            $document.off('mousemove', mousemove);
+                            $document.off('mouseup', mouseup);
+                        }
                     }
-
-                    function mouseup() {
-                        $document.off('mousemove', mousemove);
-                        $document.off('mouseup', mouseup);
-                    }
-                }
-            };
-        }]);
+                };
+            }]);
         //updatePics();
         angular.bootstrap(document, ['App']);
     }, 500);

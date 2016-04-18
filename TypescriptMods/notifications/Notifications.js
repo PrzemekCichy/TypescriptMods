@@ -53,6 +53,9 @@ var notifications;
                     inventoryWait = false;
                 }
             }
+            if (captcha) {
+                audio.play();
+            }
         }, 1000);
     })();
     //Find event to notify

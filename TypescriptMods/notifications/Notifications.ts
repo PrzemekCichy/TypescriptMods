@@ -1,4 +1,4 @@
-﻿declare var socket, addChatText, Mods, objects_data, switchWorldBugFix, Inventory, createElem, players, Notification, timestamp, getElem, options_audio, COLOR, skills, inAFight, lastRunAwayAttempt;
+﻿declare var socket, addChatText, Mods, objects_data, switchWorldBugFix, Inventory, createElem, players, Notification, timestamp, getElem, options_audio, COLOR, skills, inAFight, lastRunAwayAttempt,captcha;
 
 module notifications {
 
@@ -65,6 +65,9 @@ module notifications {
                     inventoryWait = false;
 
                 }
+            }
+            if (captcha) {
+                audio.play();
             }
         }, 1000);
     })()
