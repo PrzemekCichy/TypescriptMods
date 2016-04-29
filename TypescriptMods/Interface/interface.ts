@@ -46,11 +46,30 @@ module interface {
         }
 
         reAppend("#" + "player_xp_bar", $("#toolbar_main_holder"));
-        reAppend("#" + "inventory", $Right);
+        //reAppend("#" + "inventory", $Right);
         reAppend("#" + "skills_menu", $Right);
-        //Clear HUD
-        HUD.drawMenu = function () { }
-        ctx.hud.clearRect(0, 15, 1820, 1080);
+        
+        //// Change existing function 
+        //Doesnt draw bottom bar now
+        HUD.drawMenu= function() {
+            var a = IMAGE_SHEET[IMAGES.ACTIVITIES[0].sheet].tile_width
+                , b = IMAGE_SHEET[IMAGES.ACTIVITIES[0].sheet].tile_height;
+            bigIcons && (a *= 2,
+                b *= 2);
+            for (var d = -1, e = 0, f = IMAGES.ACTIVITIES.length; e < f; e++)
+                if (IMAGES.ACTIVITIES[e].visible) {
+                    d++;
+                    var g = IMAGES.ACTIVITIES[e]
+                        , h = IMAGE_SHEET[g.sheet];
+                    ctx.hud.drawImage(h.img[0], IMAGE_SHEET[g.sheet].tile_width * g.x, IMAGE_SHEET[g.sheet].tile_height * g.y, h.tile_width, h.tile_height, Math.round(width - a * (d + 1)), 16, a, b)
+                }
+            Draw.drawToMap(ctx.hud, IMAGES.GUI[0], {
+                x: 0,
+                y: 0,
+                relative: !1
+            });
+        }
+        //ctx.hud.clearRect(0, 105, 1720, 1080);
         refreshHUD();
         
     }
@@ -66,3 +85,4 @@ module interface {
         }
     fixCss();
 }
+

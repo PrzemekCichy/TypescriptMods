@@ -76,6 +76,8 @@ module modBreeding {
     var nests = [];
     var nestPairs = [];
 
+    var nestClick = 0;
+
     //Search map for nests
     function findNests() {
         nests = [];
@@ -151,6 +153,20 @@ module modBreeding {
         }
     }, 1000);
 
+    function hotkey() {
+        function nestKey(e) {
+            var a = Math.floor(nestClick / 10);
+            var b = Math.floor(nestClick % 10);
+            openNest(a, b);
+            nestClick++;
+            console.log(e);
+
+        };
+        document.addEventListener("keydown", function (b) {
+            if (b.keyCode === 223) (nestKey(b));
+        });
+    }
+    hotkey();
 
     function updateImages(i) {
         if (nestPairs[i][0].params.pet_id !== undefined) {
@@ -173,6 +189,7 @@ module modBreeding {
         return Breeding.get_pet_hunger(nestPairs[y][z], nestPairs[y][z]);
     }
     export var openNest = function (y, z) {
+        nestClick = y + z;
         pet_nest = nestPairs[y][z];
         Breeding.open_nest();
     }

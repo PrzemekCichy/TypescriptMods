@@ -25,7 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Boss timers\bossTimers.js" />
-    <Content Include="Boss timers\rivets.bundled.min.js" />
     <Content Include="Boss timers\template.html" />
     <Content Include="Boss timers\timerCss.css" />
     <Content Include="Interface\interface.js" />
@@ -38,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Boss timers\bossTimers.ts" />
+    <TypeScriptCompile Include="Graphs\Archery.ts" />
     <TypeScriptCompile Include="Interface\interface.ts" />
     <TypeScriptCompile Include="notifications\Notifications.ts" />
     <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
