@@ -176,7 +176,8 @@ module modBreeding {
             
         };
         document.addEventListener("keydown", function (b) {
-            if (b.keyCode === 223) (nestKey(b));
+            //223 UK, 220 others
+            if (b.keyCode === 220) (nestKey(b));
         });
     }
     hotkey();
