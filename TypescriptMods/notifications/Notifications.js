@@ -89,7 +89,7 @@ var notifications;
                 }
             }
             //While in fight, If below escape Hp player will run away from fight
-            if (data.action === "hit") {
+            if (data.action === "hit" && players[0].name !== data.target.name) {
                 if (notifications.enable.autoEscape &&
                     skills[0].health.current <= notifications.enable.escapeHP) {
                     if (players[0].temp.busy && inAFight && 500 < timestamp() - lastRunAwayAttempt) {
