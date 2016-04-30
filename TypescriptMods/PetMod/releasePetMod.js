@@ -66,7 +66,7 @@ var modBreeding;
 	");
     })();
     var nests = [];
-    var nestPairs = [];
+    modBreeding.nestPairs = [];
     var nestClick = 0;
     //Search map for nests
     function findNests() {
@@ -85,7 +85,7 @@ var modBreeding;
     ;
     //create nest pair
     function createPairs() {
-        nestPairs = [];
+        modBreeding.nestPairs = [];
         var tempPetPairs = [];
         //loop goes through each nests and finds a pair nest
         for (var nest in nests) {
@@ -98,7 +98,7 @@ var modBreeding;
                     if (other_nest_x == nests[z].i && other_nest_y == nests[z].j) {
                         tempPetPairs.push(nests[nest]);
                         tempPetPairs.push(nests[z]);
-                        nestPairs.push(tempPetPairs);
+                        modBreeding.nestPairs.push(tempPetPairs);
                     }
                 }
             }
@@ -109,13 +109,13 @@ var modBreeding;
     modBreeding.updateHolderWithNests = function () {
         findNests();
         createPairs();
-        getElem("petHelperHolder").innerHTML = breeding_pair_template({ breedingPair: nestPairs });
+        getElem("petHelperHolder").innerHTML = breeding_pair_template({ breedingPair: modBreeding.nestPairs });
     };
     modBreeding.updateHolderWithNests();
     var wait = false;
     var update = setInterval(function () {
         //Update hapiness & hunger bars
-        for (var i in nestPairs) {
+        for (var i in modBreeding.nestPairs) {
             if (modBreeding.getHunger(i, 0) !== undefined) {
                 if (wait = false && modBreeding.getHunger(i, 0) >= 75 && modBreeding.getHunger(i, 0) !== 100 || modBreeding.getHunger(i, 1) >= 75 && modBreeding.getHunger(i, 1) != 100) {
                     audio.play();
@@ -136,11 +136,24 @@ var modBreeding;
     }, 1000);
     function hotkey() {
         function nestKey(e) {
+            addClass(document.getElementById('pet_nest_form'), 'hidden');
             var a = Math.floor(nestClick / 10);
             var b = Math.floor(nestClick % 10);
-            modBreeding.openNest(a, b);
-            nestClick++;
-            console.log(e);
+            console.log(a, b);
+            try {
+                modBreeding.openNest(a, b);
+                if (nestClick !== 0 && nestClick % 2 !== 0) {
+                    nestClick += 9;
+                }
+                else if (true) {
+                    nestClick += 1;
+                }
+                console.log(nestClick);
+                console.log(e);
+            }
+            catch (e) {
+                nestClick = 0;
+            }
         }
         ;
         document.addEventListener("keydown", function (b) {
@@ -150,32 +163,32 @@ var modBreeding;
     }
     hotkey();
     function updateImages(i) {
-        if (nestPairs[i][0].params.pet_id !== undefined) {
-            getElem('pet' + i + '_0_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][0].params.pet_id].img.sheet].url + ")";
-            getElem('pet' + i + '_0_petPic').style.backgroundPosition = -(pets[nestPairs[i][0].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][0].params.pet_id].img.y * 32) + "px";
+        if (modBreeding.nestPairs[i][0].params.pet_id !== undefined) {
+            getElem('pet' + i + '_0_petPic').style.background = "url(" + IMAGE_SHEET[pets[modBreeding.nestPairs[i][0].params.pet_id].img.sheet].url + ")";
+            getElem('pet' + i + '_0_petPic').style.backgroundPosition = -(pets[modBreeding.nestPairs[i][0].params.pet_id].img.x * 32) + "px " + -(pets[modBreeding.nestPairs[i][0].params.pet_id].img.y * 32) + "px";
         }
-        if (nestPairs[i][1].params.pet_id !== undefined) {
-            getElem('pet' + i + '_1_petPic').style.background = "url(" + IMAGE_SHEET[pets[nestPairs[i][1].params.pet_id].img.sheet].url + ")";
-            getElem('pet' + i + '_1_petPic').style.backgroundPosition = -(pets[nestPairs[i][1].params.pet_id].img.x * 32) + "px " + -(pets[nestPairs[i][1].params.pet_id].img.y * 32) + "px";
+        if (modBreeding.nestPairs[i][1].params.pet_id !== undefined) {
+            getElem('pet' + i + '_1_petPic').style.background = "url(" + IMAGE_SHEET[pets[modBreeding.nestPairs[i][1].params.pet_id].img.sheet].url + ")";
+            getElem('pet' + i + '_1_petPic').style.backgroundPosition = -(pets[modBreeding.nestPairs[i][1].params.pet_id].img.x * 32) + "px " + -(pets[modBreeding.nestPairs[i][1].params.pet_id].img.y * 32) + "px";
         }
     }
     var getHappiness = function (y, z) {
-        return Breeding.get_pet_happiness(nestPairs[y][z], nestPairs[y][z]);
+        return Breeding.get_pet_happiness(modBreeding.nestPairs[y][z], modBreeding.nestPairs[y][z]);
     };
     modBreeding.getHunger = function (y, z) {
-        return Breeding.get_pet_hunger(nestPairs[y][z], nestPairs[y][z]);
+        return Breeding.get_pet_hunger(modBreeding.nestPairs[y][z], modBreeding.nestPairs[y][z]);
     };
     modBreeding.openNest = function (y, z) {
-        nestClick = y + z;
-        pet_nest = nestPairs[y][z];
+        nestClick = y * 10 + z;
+        pet_nest = modBreeding.nestPairs[y][z];
         Breeding.open_nest();
     };
     modBreeding.feedPet = function (y, z) {
-        pet_nest = nestPairs[y][z];
+        pet_nest = modBreeding.nestPairs[y][z];
         Breeding.feed_pet(players[0], pet_nest, pets[pet_nest.params.pet_id]);
     };
     modBreeding.breed = function (y, z) {
-        pet_nest = nestPairs[y][z];
+        pet_nest = modBreeding.nestPairs[y][z];
         Breeding.breed();
     };
 })(modBreeding || (modBreeding = {}));

@@ -74,7 +74,7 @@ module modBreeding {
     })();
 
     var nests = [];
-    var nestPairs = [];
+    export var nestPairs = [];
 
     var nestClick = 0;
 
@@ -155,12 +155,25 @@ module modBreeding {
 
     function hotkey() {
         function nestKey(e) {
+            addClass(document.getElementById('pet_nest_form'), 'hidden');
             var a = Math.floor(nestClick / 10);
             var b = Math.floor(nestClick % 10);
-            openNest(a, b);
-            nestClick++;
-            console.log(e);
+            
+            console.log(a, b);
+            try {
+                openNest(a, b);
+                if (nestClick !== 0 && nestClick % 2 !== 0) {
+                    nestClick += 9;
+                } else if (true) {
+                    nestClick += 1;
+                }
+                console.log(nestClick);
+                console.log(e);
 
+            } catch (e) {
+                nestClick = 0;
+            }
+            
         };
         document.addEventListener("keydown", function (b) {
             if (b.keyCode === 223) (nestKey(b));
@@ -189,7 +202,7 @@ module modBreeding {
         return Breeding.get_pet_hunger(nestPairs[y][z], nestPairs[y][z]);
     }
     export var openNest = function (y, z) {
-        nestClick = y + z;
+        nestClick = y*10 + z;
         pet_nest = nestPairs[y][z];
         Breeding.open_nest();
     }
