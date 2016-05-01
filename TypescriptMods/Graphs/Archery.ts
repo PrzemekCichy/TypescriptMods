@@ -1,15 +1,7 @@
 ﻿declare var item_base, FORGE_FORMULAS, BASE_TYPE, Player, fights;
 
+///////Need to add uses
 var arrowDetails = function () {
-    /*
-        price: 3430,
-        min_archery: 75,
-        archery_speed: 325,
-        archery_cooldown: 1550,
-        archery_damage: 15,
-        archery_range: 7,
-    }
-    */
     for (var i = 0; i < item_base.length; i++) {
         if (item_base[i].name.match(/Arrow/g)) {
             var item = item_base[i].params;

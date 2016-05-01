@@ -29,6 +29,7 @@
     <Content Include="Boss timers\timerCss.css" />
     <Content Include="Interface\interface.js" />
     <Content Include="notifications\Notifications.js" />
+    <Content Include="notifications\whisper.js" />
     <Content Include="npmPlaceholder.txt" />
     <Content Include="PetMod\petMod.html" />
     <Content Include="PetMod\releasePetMod.js" />
