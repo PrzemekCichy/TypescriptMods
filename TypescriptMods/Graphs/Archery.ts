@@ -1,4 +1,6 @@
-﻿var arrowDetails = function () {
+﻿declare var item_base, FORGE_FORMULAS, BASE_TYPE, Player, fights;
+
+var arrowDetails = function () {
     /*
         price: 3430,
         min_archery: 75,
@@ -15,8 +17,8 @@
                 p = item.archery_speed,
                 l = item.min_archery,
                 c = item.archery_cooldown,
-                c = c / 1000;
-            x = item.archery_range,
+                c:any = c / 1000,
+                x = item.archery_range,
                 n = item_base[i].name,
                 price = item.price;
             console.log(n + "\t" + price + "\t " + l + "\t" + d + "\t" + p + "\t" + ((c)).toFixed(2) + "\t" + x + "\t" + ((d / (c))).toFixed(1) + "\t" + ((d / (c))).toFixed(1) + "\t" + (price / d).toFixed(0));
@@ -46,6 +48,7 @@ var formulas = function () {
             string += item.xp + "\t";
             try {
                 for (var z = 0; z < FORGE_FORMULAS[i].pattern.length; z++) {
+                    var occurences = 0, required = "";
                     for (var x = 0; x < FORGE_FORMULAS[i].pattern[z].length; x++) {
                         var a = FORGE_FORMULAS[i].pattern[z][x];
                         if (a < 0)
@@ -69,7 +72,7 @@ formulas();
 var add_archery_damage = function(a, b, d, e) {
 
         e = Math.round(item_base[e].params.archery_damage * (1 + b.params.archery.damage_boost));
-        var f = Math.min(1, b.temp.total_archery / d.temp.total_defense);
+        var f:any = Math.min(1, b.temp.total_archery / d.temp.total_defense);
         //Base damage
         e = Math.round((Math.random() / 1.333 + .25) * e * f);
         f = "";
