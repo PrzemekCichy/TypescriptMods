@@ -89,3 +89,32 @@ var add_archery_damage = function(a, b, d, e) {
         fights[a].first_magic_dmg += e;
         return e    
 }
+
+
+
+function petValues() {
+    var string = "";
+    string += "Name\tLevel\tEats\tHunger (min)\tHappiness (min)\tInsurance (Coins)\tInsurance (MOS)\n"
+    function addData(pet) {
+        if (typeof pet.params.breeding_level !== "undefined") {
+            string += pet.name + "\t" + pet.params.breeding_level + "\t";
+            for (var i in pet.params.eats) {
+                string += item_base[i].name + " " + pet.params.eats[i] * 100 + "  ";
+            }
+            string += "\t" + pet.params.eat_interval + "\t" + pet.params.happiness + "\t";
+            string += pet.params.insurance_cost[0] + "\t" + pet.params.insurance_cost[1] + "\n";
+        }
+        else {
+            string += pet.name + "\n";
+        }
+        //console.log(string, pet.name);
+    }
+
+    for (var i = 1; i < pets.length; i++) {
+        var x = pets[i];
+        addData(x);
+    }
+
+    console.log(string);
+}
+petValues();
