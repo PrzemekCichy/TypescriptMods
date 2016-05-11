@@ -58,10 +58,10 @@ module notifications {
         setInterval(function () {
 
             if (enable.inventoryNotifications) {
-                if (Inventory.is_full(players[0]) && inventoryWait === false) {
+                if (39 <= players[0].temp.inventory.length && inventoryWait === false) {
                     spawnNotification("Inventory Full", "http://hydra-media.cursecdn.com/evoland.gamepedia.com/thumb/9/99/Inventory1.png/100px-Inventory1.png", "InventoryFull");
                     inventoryWait = true;
-                } else if (Inventory.is_full(players[0]) === false) {
+                } else if (39 > players[0].temp.inventory.length) {
                     inventoryWait = false;
 
                 }

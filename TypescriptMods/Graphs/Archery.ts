@@ -118,3 +118,29 @@ function petValues() {
     console.log(string);
 }
 petValues();
+
+function petParents() {
+    var string = "";
+    string += "Name\tParent\tBreeds\n"
+    function addData(pet) {
+        if (typeof pet.params.breeding_level !== "undefined" && pet.params.likes.length !== 0) {
+            string += pet.name + "\t";
+            for (var ii = 0; ii < pet.params.likes.length; ii++) {
+                string += pets[pet.params.likes[ii].pet_id].name + "\n ";
+                for (var xx = 0; xx < pet.params.likes[ii].returns.length; xx++) {
+                    string += "\t\t" + pets[pet.params.likes[ii].returns[xx].pet_id].name + " " + pet.params.likes[ii].returns[xx].max_chance*100 + "%\n";
+                }
+            }
+            string += "\n";
+        }
+
+    }
+
+    for (var i = 1; i < pets.length; i++) {
+        var x = pets[i];
+        addData(x);
+    }
+
+    console.log(string);
+}
+petParents();
