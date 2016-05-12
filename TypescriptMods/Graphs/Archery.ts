@@ -9,7 +9,7 @@ var arrowDetails = function () {
                 p = item.archery_speed,
                 l = item.min_archery,
                 c = item.archery_cooldown,
-                c:any = c / 1000,
+                c: any = c / 1000,
                 x = item.archery_range,
                 n = item_base[i].name,
                 price = item.price;
@@ -34,7 +34,7 @@ var formulas = function () {
             string += item.chance + "\t";
             if (typeof (item.fletching_level) !== "undefined") {
                 string += item.fletching_level + "\t";
-            }            else {
+            } else {
                 string += "0\t";
             }
             string += item.xp + "\t";
@@ -61,33 +61,33 @@ var formulas = function () {
 };
 formulas();
 //b=players[0], d=npc_base[i],  e=ArrowID
-var add_archery_damage = function(a, b, d, e) {
+var add_archery_damage = function (a, b, d, e) {
 
-        e = Math.round(item_base[e].params.archery_damage * (1 + b.params.archery.damage_boost));
-        var f:any = Math.min(1, b.temp.total_archery / d.temp.total_defense);
-        //Base damage
-        e = Math.round((Math.random() / 1.333 + .25) * e * f);
-        f = "";
+    e = Math.round(item_base[e].params.archery_damage * (1 + b.params.archery.damage_boost));
+    var f: any = Math.min(1, b.temp.total_archery / d.temp.total_defense);
+    //Base damage
+    e = Math.round((Math.random() / 1.333 + .25) * e * f);
+    f = "";
     //Block % of arrow dmg
-        if (d.temp.archery_block) {
-            var g = e;
-            e = Math.round(e * (100 - d.temp.archery_block) / 100);
-            g -= e;
-            0 < g && (f = " (enemy blocked " + g + " damage)",
-                d.b_t == BASE_TYPE.PLAYER && Player.send_message(d.id, "Blocked " + g + " archery damage", COLOR.GREEN, "archery"))
-        }
-        //If mob has less hp than calculated dmg
-        e = Math.min(e, d.temp.health);
+    if (d.temp.archery_block) {
+        var g = e;
+        e = Math.round(e * (100 - d.temp.archery_block) / 100);
+        g -= e;
+        0 < g && (f = " (enemy blocked " + g + " damage)",
+            d.b_t == BASE_TYPE.PLAYER && Player.send_message(d.id, "Blocked " + g + " archery damage", COLOR.GREEN, "archery"))
+    }
+    //If mob has less hp than calculated dmg
+    e = Math.min(e, d.temp.health);
 
-        b.b_t == BASE_TYPE.PLAYER && Player.send_message(b.id, "+" + e + " archery damage" + f, COLOR.GREEN, "archery");
+    b.b_t == BASE_TYPE.PLAYER && Player.send_message(b.id, "+" + e + " archery damage" + f, COLOR.GREEN, "archery");
 
-        //Archery works like magic, so you can attack 2ce in combat or something? Not sure
+    //Archery works like magic, so you can attack 2ce in combat or something? Not sure
     //If this is correct does it mean that if you are standing close more DPS since arrow fly faster?
-        if (fights[a].second.id != b.id)
-            return fights[a].second_magic_dmg += e,
-                e;
-        fights[a].first_magic_dmg += e;
-        return e    
+    if (fights[a].second.id != b.id)
+        return fights[a].second_magic_dmg += e,
+            e;
+    fights[a].first_magic_dmg += e;
+    return e
 }
 
 
@@ -119,16 +119,18 @@ function petValues() {
 }
 petValues();
 
-function petParents() {
+
+
+function petParents() {    
     var string = "";
-    string += "Name\tParent\tBreeds\n"
+    string += "Name\tParent\tBreeds\tMin\tMax\tXP\n"
     function addData(pet) {
         if (typeof pet.params.breeding_level !== "undefined" && pet.params.likes.length !== 0) {
-            string += pet.name + "\t";
+            string += pet.name + "\n";
             for (var ii = 0; ii < pet.params.likes.length; ii++) {
-                string += pets[pet.params.likes[ii].pet_id].name + "\n ";
+                string += "\t" + pets[pet.params.likes[ii].pet_id].name + "\n ";
                 for (var xx = 0; xx < pet.params.likes[ii].returns.length; xx++) {
-                    string += "\t\t" + pets[pet.params.likes[ii].returns[xx].pet_id].name + " " + pet.params.likes[ii].returns[xx].max_chance*100 + "%\n";
+                    string += "\t\t" + pets[pet.params.likes[ii].returns[xx].pet_id].name + "\t" + pet.params.likes[ii].returns[xx].base_chance * 100 + "\t" + pet.params.likes[ii].returns[xx].max_chance * 100 + "\t" + pet.params.likes[ii].xp + "\n";
                 }
             }
             string += "\n";

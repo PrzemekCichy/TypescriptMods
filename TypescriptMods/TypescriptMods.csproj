@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Boss timers\bossTimers.ts" />
+    <TypeScriptCompile Include="Breeding Values\Breeding.ts" />
     <TypeScriptCompile Include="Graphs\Archery.ts" />
     <TypeScriptCompile Include="Interface\interface.ts" />
     <TypeScriptCompile Include="notifications\Notifications.ts" />
