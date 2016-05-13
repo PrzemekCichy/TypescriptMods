@@ -1,4 +1,4 @@
-﻿declare var socket, addChatText, Mods, objects_data, switchWorldBugFix, Inventory, createElem, players, Notification, timestamp, getElem, options_audio, COLOR, skills, inAFight, lastRunAwayAttempt, captcha;
+﻿declare var pets;
 
 module BreedingMod {
 
