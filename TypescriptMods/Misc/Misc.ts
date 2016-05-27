@@ -18,10 +18,11 @@ function swap() {
                 console.log("break", i, swapNo);
                 i = players[0].temp.inventory.length;
             }
+            var delay = Math.floor(Math.random() * (200 - 100 + 1)) + 100;
             setTimeout(function () {
                 itterate(i);
-            }, 173);
-            console.log("itteration", i, swapNo);
+            },delay);
+            console.log("itteration", i, swapNo, delay);
         }
     };
     itterate(0);
