@@ -41,6 +41,7 @@
     <TypeScriptCompile Include="Breeding Values\Breeding.ts" />
     <TypeScriptCompile Include="Graphs\Archery.ts" />
     <TypeScriptCompile Include="Interface\interface.ts" />
+    <TypeScriptCompile Include="Misc\Misc.ts" />
     <TypeScriptCompile Include="notifications\Notifications.ts" />
     <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
   </ItemGroup>
