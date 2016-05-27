@@ -28,6 +28,7 @@
     <Content Include="Boss timers\template.html" />
     <Content Include="Boss timers\timerCss.css" />
     <Content Include="Interface\interface.js" />
+    <Content Include="Misc\Misc.js" />
     <Content Include="notifications\Notifications.js" />
     <Content Include="notifications\whisper.js" />
     <Content Include="npmPlaceholder.txt" />
@@ -38,8 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Boss timers\bossTimers.ts" />
-    <TypeScriptCompile Include="Breeding Values\Breeding.ts" />
-    <TypeScriptCompile Include="Graphs\Archery.ts" />
+    <TypeScriptCompile Include="Misc\Breeding Values\Breeding.ts" />
+    <TypeScriptCompile Include="Misc\Graphs\Archery.ts" />
     <TypeScriptCompile Include="Interface\interface.ts" />
     <TypeScriptCompile Include="Misc\Misc.ts" />
     <TypeScriptCompile Include="notifications\Notifications.ts" />
