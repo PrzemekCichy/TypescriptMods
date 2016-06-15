@@ -29,6 +29,8 @@
     <Content Include="Boss timers\timerCss.css" />
     <Content Include="Interface\interface.js" />
     <Content Include="Misc\Misc.js" />
+    <Content Include="Misc\Other People%27s Mods\Mods.js" />
+    <Content Include="notifications\JustChatMod.js" />
     <Content Include="notifications\Notifications.js" />
     <Content Include="notifications\whisper.js" />
     <Content Include="npmPlaceholder.txt" />
