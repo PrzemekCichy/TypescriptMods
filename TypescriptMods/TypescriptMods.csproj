@@ -27,6 +27,7 @@
     <Content Include="Boss timers\bossTimers.js" />
     <Content Include="Boss timers\template.html" />
     <Content Include="Boss timers\timerCss.css" />
+    <Content Include="Chestmod\ChestMod.js" />
     <Content Include="Interface\interface.js" />
     <Content Include="Misc\Misc.js" />
     <Content Include="Misc\Other People%27s Mods\Mods.js" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Boss timers\bossTimers.ts" />
+    <TypeScriptCompile Include="Chestmod\ChestMod.ts" />
     <TypeScriptCompile Include="Misc\Breeding Values\Breeding.ts" />
     <TypeScriptCompile Include="Misc\Graphs\Archery.ts" />
     <TypeScriptCompile Include="Interface\interface.ts" />
