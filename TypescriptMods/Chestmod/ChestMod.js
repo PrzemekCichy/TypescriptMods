@@ -1,36 +1,50 @@
-;
 var Chestmod;
 (function (Chestmod) {
-    var Buttons = (function () {
-        function Buttons(properties) {
+    var Tabs = (function () {
+        function Tabs(properties) {
+            this.CurrentFilter = "All";
             this.properties = properties;
         }
-        Buttons.prototype.createHolderElement = function () {
+        Tabs.prototype.createHolderElement = function () {
             var _this = this;
             if (typeof (this.holderElement) !== "undefined") {
                 return;
             }
-            var parent = document.getElementById("chest_top_holder");
+            var chestTopHoler = document.getElementById("chest_top_holder");
             this.holderElement = document.createElement("div");
             this.holderElement.setAttribute("id", "chestSortButtonsHolder");
             this.holderElement.setAttribute("height", "54px");
             this.holderElement.setAttribute("left", "-30px");
             this.holderElement.setAttribute("style", "background-color: #333333; width: 408px; \
                 display: inline-block; margin-top: 6px; left: -24px; position: relative; margin-bottom: 6px;");
-            parent.appendChild(this.holderElement);
+            /*
+            background-color: #333333;
+            display: inline - block;
+            margin - top: 6px;
+            left: -38px;
+            top: 80px;
+            position: absolute;
+            margin - bottom: 6px;
+            text - align: center;
+            vertical - align: middle;
+        }
+            */
+            chestTopHoler.appendChild(this.holderElement);
             this.renderButtons();
             this.holderElement.addEventListener('click', function (e) {
-                _this.sortChest(e.target.attributes[0].nodeValue);
+                console.log(e.target.attributes[0].nodeValue);
+                _this.CurrentFilter = e.target.attributes[0].nodeValue;
+                _this.sortChest(_this.CurrentFilter);
             }, false);
             return this;
         };
-        Buttons.prototype.renderButtons = function () {
+        Tabs.prototype.renderButtons = function () {
             var _this = this;
             this.properties.map(function (tab) {
                 _this.holderElement.insertAdjacentHTML("afterbegin", _this.returnHtmlButton(tab));
             });
         };
-        Buttons.prototype.returnHtmlButton = function (tab) {
+        Tabs.prototype.returnHtmlButton = function (tab) {
             return "<div id = " + tab.categoryName + " style='\
                 height: 32px;\
                 width: 32px;\
@@ -40,25 +54,12 @@ var Chestmod;
             '>\
             </div>";
         };
-        /*
-declare interface ITEM_CATEGORY {
-    -1: "All",
-    0: "Armors",
-    1: "Foods",
-    2: "Jewellery",
-    3: "Materials",
-    4: "Tools",
-    5: "Weapons",
-    6: "Spells",
-    7: "Pets",
-    8: "House",
-    9: "Archery",
-};
-*/
-        Buttons.prototype.sortChest = function (categoryFilter) {
+        Tabs.prototype.sortChest = function (categoryFilter) {
+            if (categoryFilter === void 0) { categoryFilter = this.CurrentFilter; }
+            categoryFilter = categoryFilter || this.CurrentFilter;
             console.log(ITEM_CATEGORY[categoryFilter.toUpperCase()]);
             //Favourites should be separated
-            if (categoryFilter == "All" || categoryFilter == "Favourites") {
+            if (categoryFilter === "All" || categoryFilter === "Favourites") {
                 chest_content = chests[0];
                 Chest.change_page(1);
                 return;
@@ -68,10 +69,11 @@ declare interface ITEM_CATEGORY {
                 return item_base[chestItem.id].b_t == ITEM_CATEGORY[categoryFilter.toUpperCase()];
             });
             Chest.change_page(1);
+            console.log("Change Page");
         };
-        return Buttons;
+        return Tabs;
     })();
-    Chestmod.Buttons = Buttons;
+    Chestmod.Tabs = Tabs;
 })(Chestmod || (Chestmod = {}));
 var categories = [
     {
@@ -143,5 +145,25 @@ var categories = [
         categoryName: "All"
     }
 ];
-var buttons = new Chestmod.Buttons(categories).createHolderElement();
+var buttons = new Chestmod.Tabs(categories).createHolderElement();
+Chest.withdraw = function (a) {
+    var b = chest_page - 1, b = parseInt(selected_chest) + 60 * b;
+    chest_item_id = chest_content[b].id;
+    Socket.send("chest_withdraw", { item_id: chest_content[b].id, item_slot: b, target_id: chest_npc.id, target_i: chest_npc.i, target_j: chest_npc.j, amount: a });
+    buttons.sortChest();
+};
+Chest.deposit = function (a) {
+    var b = chest_page - 1, b = parseInt(selected_chest) + 60 * b;
+    chest_item_id = chest_content[b].id;
+    Socket.send("chest_deposit", { item_id: chest_content[b].id, item_slot: b, target_id: chest_npc.id, target_i: chest_npc.i, target_j: chest_npc.j, amount: a });
+    buttons.sortChest();
+};
+Chest.destroy = function () {
+    var a = chest_page - 1, b = parseInt(selected_chest) + 60 * a;
+    chest_item_id = chest_content[b].id;
+    Popup.prompt(_ti("Do you want to destroy {item_name}?", { item_name: item_base[chest_item_id].name }), function () {
+        Socket.send("chest_destroy", { item_id: chest_content[b].id, item_slot: b, target_id: chest_npc.id, target_i: chest_npc.i, target_j: chest_npc.j });
+    });
+    buttons.sortChest();
+};
 //# sourceMappingURL=ChestMod.js.map
