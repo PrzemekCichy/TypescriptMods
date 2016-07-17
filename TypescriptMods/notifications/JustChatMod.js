@@ -26,8 +26,9 @@
                      console.log(message, 'color: blue');
                 } else if (data.data.message.lang === "18") {
                     console.log(message, 'color: green');
+                } else {
+                    console.log(message, 'color: black');
                 }
-                console.log(message, 'color: black');
             } else if (data.data.type == "whisper") {
                 console.log("(" + date.toLocaleTimeString() + ") <" + data.data.name + "> to <" + data.data.to + ">:" + data.data.message + " \n");
             }
