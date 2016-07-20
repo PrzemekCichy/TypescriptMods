@@ -113,7 +113,7 @@ module notifications {
             }
 
             //egg
-            /*
+            
             if (data.action == "message" && data.data.type !== "chat") {
                 var _message = data.data.message;
 
@@ -121,7 +121,7 @@ module notifications {
                     spawnNotification(data.data.message, "http://images.all-free-download.com/images/graphiclarge/easter_eggs_clip_art_11010.jpg", "Scavenger Hunt!");
                 }
             }
-            */
+            
         }
     }
 

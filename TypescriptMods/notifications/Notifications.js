@@ -101,6 +101,13 @@ var notifications;
                     audio.play();
                 ;
             }
+            //egg
+            if (data.action == "message" && data.data.type !== "chat") {
+                var _message = data.data.message;
+                if (_message.match(/Scavenger hunt/g)) {
+                    spawnNotification(data.data.message, "http://images.all-free-download.com/images/graphiclarge/easter_eggs_clip_art_11010.jpg", "Scavenger Hunt!");
+                }
+            }
         }
     }
     //Notifications

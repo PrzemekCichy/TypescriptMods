@@ -1,3 +1,9 @@
+var newElement = (function () {
+    function newElement() {
+    }
+    ;
+    return newElement;
+})();
 var Chestmod;
 (function (Chestmod) {
     var Tabs = (function () {
@@ -10,26 +16,28 @@ var Chestmod;
             if (typeof (this.holderElement) !== "undefined") {
                 return;
             }
+            /*
+            This is terible, needs to be rewritten
+            */
             var chestTopHoler = document.getElementById("chest_top_holder");
             this.holderElement = document.createElement("div");
             this.holderElement.setAttribute("id", "chestSortButtonsHolder");
             this.holderElement.setAttribute("height", "54px");
-            this.holderElement.setAttribute("left", "-30px");
             this.holderElement.setAttribute("style", "background-color: #333333; width: 408px; \
                 display: inline-block; margin-top: 6px; left: -24px; position: relative; margin-bottom: 6px;");
-            /*
-            background-color: #333333;
-            display: inline - block;
-            margin - top: 6px;
-            left: -38px;
-            top: 80px;
-            position: absolute;
-            margin - bottom: 6px;
-            text - align: center;
-            vertical - align: middle;
-        }
-            */
+            this.holderElement1 = document.createElement("div");
+            this.holderElement1.setAttribute("id", "chestSortButtonsHolder");
+            this.holderElement1.setAttribute("height", "54px");
+            this.holderElement1.setAttribute("style", "background-color: #333333; width: 408px; \
+                display: inline-block; margin-top: 6px; left: -24px; position: relative; margin-bottom: 6px;");
+            this.holderElement2 = document.createElement("div");
+            this.holderElement2.setAttribute("id", "chestSortButtonsHolder");
+            this.holderElement2.setAttribute("height", "54px");
+            this.holderElement2.setAttribute("style", "background-color: #333333; \
+                display: inline-block; margin-top: 6px; left: -24px; position: absolute;vertical-align: middle; top: 80px; margin-bottom: 6px; text-align: center;");
             chestTopHoler.appendChild(this.holderElement);
+            chestTopHoler.appendChild(this.holderElement1);
+            chestTopHoler.appendChild(this.holderElement2);
             this.renderButtons();
             this.holderElement.addEventListener('click', function (e) {
                 console.log(e.target.attributes[0].nodeValue);
