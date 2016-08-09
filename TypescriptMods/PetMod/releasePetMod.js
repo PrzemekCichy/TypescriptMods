@@ -1,7 +1,8 @@
 var modBreeding;
 (function (modBreeding) {
 	
-	
+function createElem(b,e,f){if("undefined"===typeof b||"undefined"===e)return Mods.consoleLog("createElem error: no type or attachTo"),null;b=document.createElement(b);if("undefined"!=typeof f)for(var g in f)if("id"==g||"className"==g||"cssFloat"==g||"innerHTML"==g)b[g]=f[g];else if("string"===typeof f[g]&&b.setAttribute(g,f[g]),"function"===typeof f[g]&&(b[g]=f[g]),"number"===typeof f[g]&&(b[g]=""+f[g]),"object"===typeof f[g])for(var k in f[g])"style"==g&&(b.style[k]=f[g][k]),"setAttributes"==g&&
+b.setAttribute(k,""+f[g][k]),"setFunctions"==g&&(b[k]=f[g][k]);if("string"===typeof e)getElem(e).appendChild(b);else if("object"===typeof e)e.appendChild(b);else return b}	
 	/*!
 
  handlebars v4.0.5
