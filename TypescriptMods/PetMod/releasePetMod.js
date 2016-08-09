@@ -1,5 +1,8 @@
 var modBreeding;
 (function (modBreeding) {
+
+function getElem(b,e){if("string"!==typeof b)return null;var f=document.getElementById(b);if(null===f)return null;if("undefined"===typeof e)return f;for(var g in e)if("id"==g||"className"==g||"cssFloat"==g||"innerHTML"==g)f[g]=e[g];else if("string"===typeof e[g]&&f.setAttribute(g,e[g]),"function"===typeof e[g]&&(f[g]=e[g]),"number"===typeof e[g]&&(f[g]=""+e[g]),"object"===typeof e[g])for(var k in e[g])"style"==g&&(f.style[k]=e[g][k]),"setAttributes"==g&&f.setAttribute(k,"javascript: "+e[g][k]),"setFunctions"==
+g&&(f[k]=e[g][k]);return f}
 	
 function createElem(b,e,f){if("undefined"===typeof b||"undefined"===e)return Mods.consoleLog("createElem error: no type or attachTo"),null;b=document.createElement(b);if("undefined"!=typeof f)for(var g in f)if("id"==g||"className"==g||"cssFloat"==g||"innerHTML"==g)b[g]=f[g];else if("string"===typeof f[g]&&b.setAttribute(g,f[g]),"function"===typeof f[g]&&(b[g]=f[g]),"number"===typeof f[g]&&(b[g]=""+f[g]),"object"===typeof f[g])for(var k in f[g])"style"==g&&(b.style[k]=f[g][k]),"setAttributes"==g&&
 b.setAttribute(k,""+f[g][k]),"setFunctions"==g&&(b[k]=f[g][k]);if("string"===typeof e)getElem(e).appendChild(b);else if("object"===typeof e)e.appendChild(b);else return b}	
