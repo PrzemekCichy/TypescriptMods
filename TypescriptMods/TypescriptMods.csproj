@@ -48,7 +48,19 @@
     <TypeScriptCompile Include="Interface\interface.ts" />
     <TypeScriptCompile Include="Misc\Misc.ts" />
     <TypeScriptCompile Include="notifications\Notifications.ts" />
+    <TypeScriptCompile Include="PetMod\BreedingHelperRedesign.ts" />
     <TypeScriptCompile Include="PetMod\releasePetMod.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="typings\d3\d3.d.ts" />
+    <TypeScriptCompile Include="typings\d3\plugins\d3.superformula.d.ts" />
+    <TypeScriptCompile Include="typings\jquery.bootstrap.wizard\jquery.bootstrap.wizard.d.ts" />
+    <TypeScriptCompile Include="typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".bin\node.cmd" />
