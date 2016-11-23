@@ -1,26 +1,11 @@
-﻿declare var addClass;
-interface Pet {
-
-}
-interface PetPair {
-    pet1: Pet,
-    pet2: Pet
-}
-
 var current_map = 300;
-var on_map: any = [];
-
-module BreedingMod {
-
-    export class Controller {
-        static $inject = ['$scope', '$element'];
-        private element: ng.IAugmentedJQuery;
-        private scope: ng.IAugmentedJQuery;
-        private nests: any[] = ["Empty"];
-        private nestPair: any[];
-        private selectedNest = 0;
-
-        constructor() {
+var on_map = [];
+var BreedingMod;
+(function (BreedingMod) {
+    var Controller = (function () {
+        function Controller() {
+            this.nests = ["Empty"];
+            this.selectedNest = 0;
             this.initializeDom();
             this.removeOldListeners();
             this.findNests();
@@ -29,9 +14,9 @@ module BreedingMod {
             this.addListeners();
             this.setUpInterval();
             this.initializeListeners();
-        };
-
-        private findNests() {
+        }
+        ;
+        Controller.prototype.findNests = function () {
             var tempNests = [];
             for (var x in on_map[300]) {
                 if (on_map[300][x] != undefined) {
@@ -50,8 +35,8 @@ module BreedingMod {
             }
             this.nests = tempNests;
         };
-
-        public createPairs() {
+        ;
+        Controller.prototype.createPairs = function () {
             this.nestPair = [];
             var tempPetPair = [];
             //loop goes through each nests and finds a pair nest
@@ -62,7 +47,6 @@ module BreedingMod {
                 }
                 var other_nest_x = currentlySelected.params.other_nest.i + 10;
                 var other_nest_y = currentlySelected.params.other_nest.j + 10;
-
                 for (var z = nest; z < this.nests.length; z++) {
                     tempPetPair = [];
                     //pair nests are pushed together as a Pair array ( tempPetPair[] ) and then into array storing all arrays ( nestPair[] ).
@@ -72,21 +56,17 @@ module BreedingMod {
                         this.nestPair.push(tempPetPair);
                     }
                 }
-
-
             }
             console.log(this);
         };
-
-        private initializeDom() {
+        ;
+        Controller.prototype.initializeDom = function () {
             var link = document.createElement("link");
             link.href = "https://dl.dropboxusercontent.com/s/6hn85tw23v73zb1/breeding_mod.css";
             link.type = "text/css";
             link.rel = "stylesheet";
             $("head").appendChild(link);
-
-            var str =
-                "<div id='breeding_pets'>\
+            var str = "<div id='breeding_pets'>\
                     <div class='breeding_menu'>\
                         <div id='breeding_menu_close' class='breeding_menu_options'>\
                             Close\
@@ -99,11 +79,9 @@ module BreedingMod {
                         </div>\
                     </div>\
                 </div>";
-
             document.getElementsByTagName("body")[0].insertAdjacentHTML('beforeend', str);
-        }
-
-        private openNest(elem) {
+        };
+        Controller.prototype.openNest = function (elem) {
             if (current_map !== 300) {
                 return;
             }
@@ -112,9 +90,8 @@ module BreedingMod {
             this.selectedNest = i;
             pet_nest = on_map[300][this.nests[i].x][this.nests[i].y];
             Breeding.open_nest();
-        }
-
-        private nextNest() {
+        };
+        Controller.prototype.nextNest = function () {
             console.log("Hotkey");
             if (current_map !== 300) {
                 return;
@@ -125,17 +102,16 @@ module BreedingMod {
             if (this.selectedNest == this.nests.length) {
                 this.selectedNest = 0;
             }
-        }
-        private update;
-
-        private setUpInterval() {
+        };
+        Controller.prototype.setUpInterval = function () {
+            var _this = this;
             var wait = false;
             var audio;
             audio = new Audio('https://dl.dropboxusercontent.com/s/t3xqbmi7jw5vy8v/glass_ping-Go445-1207030150.mp3');
             audio.volume = 0.2;
-            this.update = setInterval(() => {
+            this.update = setInterval(function () {
                 var nestId = 0;
-                this.nests.forEach((nest) => {
+                _this.nests.forEach(function (nest) {
                     if (wait == false && Breeding.get_pet_hunger(on_map[300][nest.x][nest.y], on_map[300][nest.x][nest.y]) >= 75 && Breeding.get_pet_hunger(on_map[300][nest.x][nest.y], on_map[300][nest.x][nest.y]) !== 100) {
                         audio.play();
                         wait = true;
@@ -147,72 +123,64 @@ module BreedingMod {
                         $happiness.innerHTML = Breeding.get_pet_happiness(on_map[300][nest.x][nest.y], on_map[300][nest.x][nest.y]) + "%";
                         $hunger.style.width = Breeding.get_pet_hunger(on_map[300][nest.x][nest.y], on_map[300][nest.x][nest.y]) + "%";
                         $hunger.innerHTML = Breeding.get_pet_hunger(on_map[300][nest.x][nest.y], on_map[300][nest.x][nest.y]) + "%";
-
-                    } else {
+                    }
+                    else {
                         $happiness.style.width = "0%";
                         $happiness.innerHTML = "Add";
                         $hunger.style.width = "0%";
                         $hunger.innerHTML = "Pet";
                     }
                     nestId++;
-
                 });
                 wait = false;
             }, 1000);
-        }
-
-        private insertPetHTML() {
+        };
+        Controller.prototype.insertPetHTML = function () {
+            var _this = this;
             var nestId = 0;
             var petId = 0;
             var $holder = document.getElementById("breeding_pets");
-
-            this.nestPair.forEach((nests) => {
+            this.nestPair.forEach(function (nests) {
                 $holder.insertAdjacentHTML('beforeend', "<div id='breeding_nest_" + nestId + "' class='breeding_nests'></div>");
                 var $nest = document.getElementById("breeding_nest_" + nestId);
-
-                nests.forEach((nest) => {
+                nests.forEach(function (nest) {
                     //if (on_map[300][nest.i][nest.j].params.pet_id != null) {
-                        $nest.insertAdjacentHTML('beforeend', this.constructPetHTML(petId));
+                    $nest.insertAdjacentHTML('beforeend', _this.constructPetHTML(petId));
                     //} else {
                     //    $nest.insertAdjacentHTML('beforeend', this.constructEmptyPetHTML(petId));
                     //}
                     petId++;
                 });
-
                 nestId++;
-            })
-        }
-
-
-        private constructEmptyPetHTML(nestId: number): string {
+            });
+        };
+        Controller.prototype.constructEmptyPetHTML = function (nestId) {
             return "<div id='breeding_pet_" + nestId + "' class='breeding_pair'>\
-                <div id='pet_"+ nestId + "_pic' class='breeding_pic breeding_empty_pic'></div>\
+                <div id='pet_" + nestId + "_pic' class='breeding_pic breeding_empty_pic'></div>\
                 <div class='breeding_progress_bar breeding_empty'>Add pet.</div>\
             </div>";
-        }
-
-        private constructPetHTML(nestId: number): string {
+        };
+        Controller.prototype.constructPetHTML = function (nestId) {
             return "<div id= 'breeding_pet_" + nestId + "' class='breeding_pair'>\
-                    <div id='pet_"+ nestId + "_pic' class='breeding_pic'></div>\
+                    <div id='pet_" + nestId + "_pic' class='breeding_pic'></div>\
                     <div class='breeding_bars_container'>\
                         <div class='breeding_progress_bar'>\
-                            <div id= 'pet_"+ nestId + "_happiness' class='breeding_bar_happiness'></div>\
+                            <div id= 'pet_" + nestId + "_happiness' class='breeding_bar_happiness'></div>\
                         </div>\
                         <div class='breeding_progress_bar' >\
-                            <div id='pet_"+ nestId + "_hunger'  class='breeding_bar_hunger'></div>\
+                            <div id='pet_" + nestId + "_hunger'  class='breeding_bar_hunger'></div>\
                         </div>\
                     </div>\
                 </div>";
-        }
-
-        private addListeners() {
+        };
+        Controller.prototype.addListeners = function () {
             for (var i in this.nests) {
                 console.log("Added", i);
                 document.getElementById("breeding_pet_" + i).addEventListener("click", this.openNest.bind(this), false);
-            };
-        }
-
-        private removeOldListeners() {
+            }
+            ;
+        };
+        Controller.prototype.removeOldListeners = function () {
             if (this.nests != null) {
                 for (var i in this.nests) {
                     console.log("removed", i);
@@ -220,22 +188,24 @@ module BreedingMod {
                     if ($elem != null) {
                         $elem.removeEventListener("click", this.openNest.bind(this), false);
                     }
-                };
+                }
+                ;
             }
-        }
-
-        private initializeListeners() {
-            document.addEventListener("keydown", (b) => {
+        };
+        Controller.prototype.initializeListeners = function () {
+            var _this = this;
+            document.addEventListener("keydown", function (b) {
                 //223 UK, 220 others
-                if (b.keyCode === 220) (this.nextNest());
+                if (b.keyCode === 220)
+                    (_this.nextNest());
             });
             //Add refresh listener
-            
             //Add close/ Open listeners
-        }
-    }
-}
-
-var AppTest: any = new
-    BreedingMod.Controller();
-
+        };
+        Controller.$inject = ['$scope', '$element'];
+        return Controller;
+    })();
+    BreedingMod.Controller = Controller;
+})(BreedingMod || (BreedingMod = {}));
+var AppTest = new BreedingMod.Controller();
+//# sourceMappingURL=Breeding.js.map
