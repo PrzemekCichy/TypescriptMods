@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -29,6 +29,7 @@
     <Content Include="Boss timers\timerCss.css" />
     <Content Include="Chestmod\ChestMod.js" />
     <Content Include="Interface\interface.js" />
+    <Content Include="Misc\Breeding Values\Breeding.js" />
     <Content Include="Misc\Misc.js" />
     <Content Include="Misc\Other People%27s Mods\Mods.js" />
     <Content Include="notifications\JustChatMod.js" />
