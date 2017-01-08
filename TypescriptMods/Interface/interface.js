@@ -10,7 +10,7 @@ var interface;
             this.escapeHP = _escapeHP;
         }
         return Options;
-    })();
+    }());
     interface.Options = Options;
     //Modify this for according to personal preferences
     interface.enable = new Options(true);

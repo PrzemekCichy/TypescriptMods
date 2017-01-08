@@ -3,7 +3,7 @@ var newElement = (function () {
     }
     ;
     return newElement;
-})();
+}());
 var Chestmod;
 (function (Chestmod) {
     var Tabs = (function () {
@@ -80,7 +80,7 @@ var Chestmod;
             console.log("Change Page");
         };
         return Tabs;
-    })();
+    }());
     Chestmod.Tabs = Tabs;
 })(Chestmod || (Chestmod = {}));
 var categories = [

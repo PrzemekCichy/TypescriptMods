@@ -22,7 +22,7 @@ var notifications;
             this.escapeHP = _escapeHP;
         }
         return Enable;
-    })();
+    }());
     notifications.Enable = Enable;
     //Modify this for according to personal preferences
     notifications.enable = new Enable(true, true, true, true, true, true, 70, 40);

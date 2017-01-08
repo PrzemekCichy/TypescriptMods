@@ -88,7 +88,7 @@ var modBreeding;
                 return Breeding.get_pet_happiness(modBreeding.nestPairs[y][z], modBreeding.nestPairs[y][z]);
             };
             return Pet;
-        })();
+        }());
         BreedingMod.Pet = Pet;
         var getHappiness = function (y, z) {
         };

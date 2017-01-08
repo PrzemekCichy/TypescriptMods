@@ -29,7 +29,7 @@
     <Content Include="Boss timers\timerCss.css" />
     <Content Include="Chestmod\ChestMod.js" />
     <Content Include="Interface\interface.js" />
-    <Content Include="Misc\Breeding Values\Breeding.js" />
+    <Content Include="PetMod\Breeding.js" />
     <Content Include="Misc\Misc.js" />
     <Content Include="Misc\Other People%27s Mods\Mods.js" />
     <Content Include="notifications\JustChatMod.js" />
@@ -44,7 +44,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="Boss timers\bossTimers.ts" />
     <TypeScriptCompile Include="Chestmod\ChestMod.ts" />
-    <TypeScriptCompile Include="Misc\Breeding Values\Breeding.ts" />
+    <TypeScriptCompile Include="Interface\NewInterface.ts" />
+    <TypeScriptCompile Include="PetMod\Breeding.ts" />
     <TypeScriptCompile Include="Misc\Graphs\Archery.ts" />
     <TypeScriptCompile Include="Interface\interface.ts" />
     <TypeScriptCompile Include="Misc\Misc.ts" />
@@ -73,7 +74,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Misc\Breeding Values\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

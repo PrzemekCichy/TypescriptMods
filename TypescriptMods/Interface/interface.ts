@@ -25,7 +25,7 @@ module interface {
     var IdToReassign = ["chat", "chat_button", "filters_button", "quests_button", "contacts_button", "donation_button", "my_text", "current_channel", "chat_resize", "tabs", "player_healthbar", "toolbar_main_holder"];
 
     function init() {
-        
+
         createElem("div", $Body, {
             id: "rightSideMenuWrapper",
             innerHTML: ""
@@ -48,7 +48,7 @@ module interface {
 
         for (var i in IdToReassign) {
             console.log(i);
-            reAppend("#" + IdToReassign[i], $Body);            
+            reAppend("#" + IdToReassign[i], $Body);
         }
 
         reAppend("#" + "player_xp_bar", $("#toolbar_main_holder"));
@@ -58,7 +58,7 @@ module interface {
         //reAppend("#" + "settings", $Right);   
         //// Change existing function 
         //Doesnt draw bottom/top bar now
-        HUD.drawMenu= function() {
+        HUD.drawMenu = function () {
             var a = IMAGE_SHEET[IMAGES.ACTIVITIES[0].sheet].tile_width
                 , b = IMAGE_SHEET[IMAGES.ACTIVITIES[0].sheet].tile_height;
             bigIcons && (a *= 2,
@@ -73,7 +73,7 @@ module interface {
         }
         //ctx.hud.clearRect(0, 105, 1720, 1080);
         refreshHUD();
-        
+
     }
     init();
 
@@ -88,23 +88,23 @@ module interface {
         $("#player_xp_bar").style.width = "350px";
         $("#inventory").style.top = "178px";
         $("#inventory").style.display = "block";
-      /*  $("#skills_menu").class = "menu";
-        $("#skills_menu").style.top = "490px";
-        $("#skills_menu").style.display = "block";
-        $("#skills_menu").style.display = "block";
-        $("#skills_menu").style["width"] = "268px";
-        $("#skills_menu").style["padding-left"] = "14px";
-        $("#skills_menu").style["padding-right"] = "14px";       
-        $("#skills_menu").style["max-width"] = "268px";
-        */
+        /*  $("#skills_menu").class = "menu";
+          $("#skills_menu").style.top = "490px";
+          $("#skills_menu").style.display = "block";
+          $("#skills_menu").style.display = "block";
+          $("#skills_menu").style["width"] = "268px";
+          $("#skills_menu").style["padding-left"] = "14px";
+          $("#skills_menu").style["padding-right"] = "14px";       
+          $("#skills_menu").style["max-width"] = "268px";
+          */
 
         for (var i = 0; i < document.getElementsByClassName("menu").length; i++) {
             $$(".menu")[i].style["box-shadow"] = "";
-            $$(".menu")[i].style["opacity"] = "1"; 
+            $$(".menu")[i].style["opacity"] = "1";
         }
-        $(".menu").style["box-shadow"] = ""; 
-        $(".menu").style["opacity"] = "1"; 
-                //Equipment
+        $(".menu").style["box-shadow"] = "";
+        $(".menu").style["opacity"] = "1";
+        //Equipment
         $("#gear_inv_holder").style.display = "block";
         $("#gear_inv_holder").style["top"] = "15px";
         $("#gear_inv_holder").style["left"] = "";
@@ -113,7 +113,7 @@ module interface {
         $("#gear_canvas_holder").style["width"] = "130px";
         $("#gear_canvas_holder").style.height = "130px";
         $("#gear_canvas_holder").style["float"] = "right";
-        $("#gear_canvas_holder").style.margin= "20px 8px 0px 4px";
+        $("#gear_canvas_holder").style.margin = "20px 8px 0px 4px";
         $("#gear_inv_canvas").style["width"] = "130px";
         $("#gear_inv_canvas").style.height = "130px";
         $("#chat").style["height"] = "220px";
@@ -134,7 +134,7 @@ module interface {
         $("#settings").style["max-width"] = "288px";
         $("#settings").style["max-height"] = "120px";
         */
-        
+
         //Fixes blurry img rendering
         getElem("gear_inv_canvas").style["image-rendering"] = "pixelated";
         getElem("base_show").style["image-rendering"] = "pixelated";
@@ -145,10 +145,10 @@ module interface {
 
         try {
             $("#gear_stats_holder").remove();
-        } catch(e){}
+        } catch (e) { }
         Gearmd.updateStats = function () { };
-          
-        }
+
+    }
     fixCss();
 }
 
